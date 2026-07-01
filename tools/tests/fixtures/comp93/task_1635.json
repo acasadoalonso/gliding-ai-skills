@@ -1,0 +1,61 @@
+{
+  "task_id": 1153,
+  "name": "Task1",
+  "type": "Task",
+  "length": "331.99 km",
+  "task_from": "Elverum Starmoen",
+  "airfield": "Elverum Starmoen",
+  "elevation": 218,
+  "timezone": "Europe/Oslo",
+  "start_altitude": 0,
+  "finish_altitude": 0,
+  "start_time_millis": 0,
+  "date_millis": 1782432000000,
+  "turnpoints": [
+    {
+      "index": 0,
+      "name": "Starmoen",
+      "role": "Start",
+      "latitude": 60.87813333333333,
+      "longitude": 11.673233333333334,
+      "observation_zone": "Line",
+      "radius": 2500
+    },
+    {
+      "index": 1,
+      "name": "Kirkenær st",
+      "role": "Turnpoint",
+      "latitude": 60.456316666666666,
+      "longitude": 12.060833333333333,
+      "observation_zone": "Cylinder",
+      "radius": 500
+    },
+    {
+      "index": 2,
+      "name": "Hernes krk",
+      "role": "Turnpoint",
+      "latitude": 60.9268,
+      "longitude": 11.633633333333334,
+      "observation_zone": "Cylinder",
+      "radius": 500
+    },
+    {
+      "index": 3,
+      "name": "Frya flpl",
+      "role": "Turnpoint",
+      "latitude": 61.54541666666667,
+      "longitude": 10.062716666666667,
+      "observation_zone": "Cylinder",
+      "radius": 500
+    },
+    {
+      "index": 4,
+      "name": "Starmoen",
+      "role": "Finish",
+      "latitude": 60.87813333333333,
+      "longitude": 11.673233333333334,
+      "observation_zone": "Line",
+      "radius": 250
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "id": 93,
+  "name": "Norway SGP 2026",
+  "short_name": "Norway SGP",
+  "first_day": "2026-06-26",
+  "last_day": "2026-07-04",
+  "pilot_count": 13,
+  "active_days": 5,
+  "days": [
+    {
+      "day_id": 1635,
+      "date": "2026-06-26",
+      "title": "Practice 1 - Friday, 26 June 2026",
+      "short_title": "Practice 1",
+      "type": 2,
+      "type_label": "Practice"
+    },
+    {
+      "day_id": 1636,
+      "date": "2026-06-27",
+      "title": "Practice 2 - Saturday, 27 June 2026",
+      "short_title": "Practice 2",
+      "type": 2,
+      "type_label": "Practice"
+    },
+    {
+      "day_id": 1637,
+      "date": "2026-06-28",
+      "title": "Race 1 - Sunday, 28 June 2026",
+      "short_title": "Race 1",
+      "type": 1,
+      "type_label": "Race"
+    },
+    {
+      "day_id": 1638,
+      "date": "2026-06-29",
+      "title": "Race 2 - Monday, 29 June 2026",
+      "short_title": "Race 2",
+      "type": 1,
+      "type_label": "Race"
+    },
+    {
+      "day_id": 1639,
+      "date": "2026-06-30",
+      "title": "Race 3 - Tuesday, 30 June 2026",
+      "short_title": "Race 3",
+      "type": 1,
+      "type_label": "Race"
+    },
+    {
+      "day_id": 1640,
+      "date": "2026-07-01",
+      "title": "Race 4 - Wednesday, 1 July 2026",
+      "short_title": "Race 4",
+      "type": 1,
+      "type_label": "Race"
+    },
+    {
+      "day_id": 1641,
+      "date": "2026-07-02",
+      "title": "Race 5 - Thursday, 2 July 2026",
+      "short_title": "Race 5",
+      "type": 1,
+      "type_label": "Race"
+    },
+    {
+      "day_id": 1642,
+      "date": "2026-07-03",
+      "title": "Race 6 - Friday, 3 July 2026",
+      "short_title": "Race 6",
+      "type": 1,
+      "type_label": "Race"
+    },
+    {
+      "day_id": 1643,
+      "date": "2026-07-04",
+      "title": "Race 7 - Saturday, 4 July 2026",
+      "short_title": "Race 7",
+      "type": 1,
+      "type_label": "Race"
+    }
+  ]
+}

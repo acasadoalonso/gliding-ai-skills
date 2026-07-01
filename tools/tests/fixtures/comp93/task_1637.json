@@ -1,0 +1,79 @@
+{
+  "task_id": 1155,
+  "name": "Race1",
+  "type": "Task",
+  "length": "261.36 km",
+  "task_from": "Elverum Starmoen",
+  "airfield": "Elverum Starmoen",
+  "elevation": 218,
+  "timezone": "Europe/Oslo",
+  "start_altitude": 1700,
+  "finish_altitude": 416,
+  "start_time_millis": 50400000,
+  "date_millis": 1782604800000,
+  "turnpoints": [
+    {
+      "index": 0,
+      "name": "Starmoen",
+      "role": "Start",
+      "latitude": 60.87813333333333,
+      "longitude": 11.673233333333334,
+      "observation_zone": "Line",
+      "radius": 2500
+    },
+    {
+      "index": 1,
+      "name": "Atna",
+      "role": "Turnpoint",
+      "latitude": 61.73726666666666,
+      "longitude": 10.8205,
+      "observation_zone": "Cylinder",
+      "radius": 500
+    },
+    {
+      "index": 2,
+      "name": "Åkrestrømmen",
+      "role": "Turnpoint",
+      "latitude": 61.69595,
+      "longitude": 11.197183333333333,
+      "observation_zone": "Cylinder",
+      "radius": 500
+    },
+    {
+      "index": 3,
+      "name": "Hovdedalen",
+      "role": "Turnpoint",
+      "latitude": 61.22058333333333,
+      "longitude": 11.157633333333333,
+      "observation_zone": "Cylinder",
+      "radius": 500
+    },
+    {
+      "index": 4,
+      "name": "N Løset",
+      "role": "Turnpoint",
+      "latitude": 61.39405,
+      "longitude": 11.368166666666667,
+      "observation_zone": "Cylinder",
+      "radius": 500
+    },
+    {
+      "index": 5,
+      "name": "Hernes krk",
+      "role": "Turnpoint",
+      "latitude": 60.9268,
+      "longitude": 11.633633333333334,
+      "observation_zone": "Cylinder",
+      "radius": 500
+    },
+    {
+      "index": 6,
+      "name": "Starmoen finish N",
+      "role": "Finish",
+      "latitude": 60.88055,
+      "longitude": 11.666266666666667,
+      "observation_zone": "Line",
+      "radius": 250
+    }
+  ]
+}

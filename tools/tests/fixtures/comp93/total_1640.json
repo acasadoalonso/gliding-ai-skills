@@ -1,0 +1,111 @@
+{
+  "day_id": 1640,
+  "results_status": 1,
+  "results_status_label": "unofficial",
+  "standings": [
+    {
+      "pilot_id": 1206,
+      "competition_number": "3V",
+      "name": "Tilo Holighaus",
+      "country": "DE",
+      "total_points": 30,
+      "rank": 1
+    },
+    {
+      "pilot_id": 1957,
+      "competition_number": "MA",
+      "name": "Arne Martin Güettler",
+      "country": "NO",
+      "total_points": 28,
+      "rank": 2
+    },
+    {
+      "pilot_id": 1397,
+      "competition_number": "EL",
+      "name": "Kato Kvitne",
+      "country": "NO",
+      "total_points": 23,
+      "rank": 3
+    },
+    {
+      "pilot_id": 1341,
+      "competition_number": "CT",
+      "name": "Klaus Kalmbach",
+      "country": "DE",
+      "total_points": 22,
+      "rank": 4
+    },
+    {
+      "pilot_id": 2458,
+      "competition_number": "56",
+      "name": "Teet Jagomägi",
+      "country": "EE",
+      "total_points": 19,
+      "rank": 5
+    },
+    {
+      "pilot_id": 2007,
+      "competition_number": "S",
+      "name": "Michael Pfennig",
+      "country": "DE",
+      "total_points": 19,
+      "rank": 6
+    },
+    {
+      "pilot_id": 1390,
+      "competition_number": "IGC",
+      "name": "Petr Panek",
+      "country": "CZ",
+      "total_points": 17,
+      "rank": 7
+    },
+    {
+      "pilot_id": 2265,
+      "competition_number": "LA",
+      "name": "Eirik Brenner Marthins",
+      "country": "NO",
+      "total_points": 10,
+      "rank": 8
+    },
+    {
+      "pilot_id": 1466,
+      "competition_number": "LN",
+      "name": "Luka Žnidaršič",
+      "country": "SI",
+      "total_points": 9,
+      "rank": 9
+    },
+    {
+      "pilot_id": 2264,
+      "competition_number": "RH",
+      "name": "Rune Hovda",
+      "country": "NO",
+      "total_points": 4,
+      "rank": 10
+    },
+    {
+      "pilot_id": 2261,
+      "competition_number": "M1",
+      "name": "Maciej Walasek",
+      "country": "PL",
+      "total_points": 2,
+      "rank": 11
+    },
+    {
+      "pilot_id": 2276,
+      "competition_number": "EI",
+      "name": "Jo Inge Bjørø",
+      "country": "NO",
+      "total_points": 1,
+      "rank": 12
+    },
+    {
+      "pilot_id": 1311,
+      "competition_number": "2Y",
+      "name": "Mikael Widén",
+      "country": "SE",
+      "total_points": 0,
+      "rank": 13
+    }
+  ]
+}

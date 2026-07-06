@@ -1,0 +1,13 @@
+- [Download IGC from SoaringSpot](download-igc-from-soaringspot.md) — step-by-step procedure for downloading and validating IGC flight logs
+- [Download all IGC files for 20 Metre Day 9, WGC 2026](download-igc-20metre-day9-wgc2026.md) — batch download procedure for a specific class/day
+- [Validate FAI sporting license for pilots](validate-fai-sporting-license-for-pilots.md) — procedure for validating FAI sporting licenses for WGC 2026 / EGC 2026 pilots against FAI extranet API
+- [validate-fai-licenses skill](validate-fai-licenses-skill.md) — how the skill validates an entry .xlsx against the FAI extranet, writes a report, and colours rows green/blue/red
+- [List contestants by class](list-contestants-by-class.md) — procedure for listing SoaringSpot contest contestants grouped by class using MCP tools
+- [SGP MCP server](sgp-mcp-server.md) — how to run/query/extend the SGP server in src/SGP (8 tools: competitions, pilots, tasks, waypoints/length, day & total results; score-field decoding; add-a-tool pattern)
+- [Get total results via SGP MCP](get-total-results-sgp-mcp.md) — retrieve cumulative standings for a competition day (use day_id from get_competition, not positional index)
+- [SGP competitors and ranking validation](sgp-competitors-and-ranking-validation.md) — list competition pilots via get_pilots and validate each FAI ranking_id via validate_ranking_id, cross-reference names
+- [Document MCP server and write README](document-mcp-server-readme.md) — process for documenting an MCP server: explore codebase first (agent + direct reads), then write README with overview, quick start, tools table, workflow, architecture, deps, deployment, tests, project structure
+- [Document MCP server and write README](document-mcp-server-readme.md) — process for documenting an MCP server: explore codebase first (agent + direct reads), then write README with overview, quick start, tools table, workflow, architecture, deps, deployment, tests, project structure
+- [IGC FLARM Comparison](igc-flarm-comparison) — Extract FLARM IDs from IGC `LLXVFLARM` field and compare against SGP pilot list
+- [Generate .cucx from SGP](generate-cucx-from-sgp.md) — tools/make_cucx.py builds a SeeYou .cucx from an SGP comp; documents the .cucx ZIP/SQLite format, hash, radian coords, and gotchas
+- [validate-igc-id skill](validate-igc-id-skill.md) — validate the "Igc id" column against the IGC Ranking REST API (rlpilot?id=), report + green/red coloured copy; Blank-profile and diacritics gotchas + the build procedure (read API doc, probe with curl, model on validate-fai-licenses, verify fills vs report)

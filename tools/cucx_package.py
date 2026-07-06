@@ -21,7 +21,30 @@ def _code(name: str) -> str:
     return "".join(ch for ch in name.upper() if ch.isalnum())[:8]
 
 
-def build_cup(bundle: dict) -> str:
+def _selected_tasks(tasks: list, days) -> list:
+    """Tasks whose turnpoint sequence goes into the CUP Related Tasks section.
+
+    `days` is None/"ALL" for every task, or an int task_number (1-based, as
+    shown in the day results — "Day 3") to emit just that day's task line.
+    The contest DB always keeps every day regardless of this filter.
+    """
+    if days is None or str(days).upper() == "ALL":
+        return tasks
+    return [t for t in tasks if t["task_number"] == int(days)]
+
+
+def _task_line(t: dict) -> str:
+    """One CUP task: label followed by the ordered turnpoint names.
+
+    Each name must match a waypoint emitted above, so SeeYou can resolve the
+    task geometry back to the waypoint database.
+    """
+    label = t.get("name") or f"Task {t['task_number']}"
+    names = ",".join(f'"{tp["name"]}"' for tp in t["turnpoints"])
+    return f'"{label}",{names}'
+
+
+def build_cup(bundle: dict, days=None) -> str:
     seen = {}
     for t in bundle["tasks"]:
         for tp in t["turnpoints"]:
@@ -33,6 +56,8 @@ def build_cup(bundle: dict) -> str:
         style = "1"  # normal turnpoint
         rows.append(f'"{name}","{_code(name)}",,{lat},{lon},0.0m,{style},,,,')
     rows.append("-----Related Tasks-----")
+    for t in _selected_tasks(bundle["tasks"], days):
+        rows.append(_task_line(t))
     return "\r\n".join(rows) + "\r\n"
 
 
@@ -52,12 +77,12 @@ def _register_contest_file(db_path: str, cup_name: str, cup_bytes: bytes, contes
     return cfid
 
 
-def assemble_cucx(bundle: dict, out_path: str) -> str:
+def assemble_cucx(bundle: dict, out_path: str, days=None) -> str:
     with tempfile.TemporaryDirectory() as td:
         db_path = str(Path(td) / "contest.db")
         meta = cucx_db.build_contest_db(bundle, db_path)
 
-        cup_text = build_cup(bundle)
+        cup_text = build_cup(bundle, days=days)
         cup_bytes = cup_text.encode("utf-8")
         cup_name = f"{bundle['comp']['id']}_waypoints.cup"
         cfid = _register_contest_file(db_path, cup_name, cup_bytes, meta["contest_id"])

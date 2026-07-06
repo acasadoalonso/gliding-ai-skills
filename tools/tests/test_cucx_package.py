@@ -17,9 +17,47 @@ def test_cup_header_and_turnpoints():
 
 def test_cup_dedupes_shared_turnpoints():
     text = pkg.build_cup(_bundle())
-    names = [ln.split(",")[0].strip('"') for ln in text.splitlines()
-             if ln and not ln.startswith("name,") and not ln.startswith("---")]
+    wpt_section = text.split("-----Related Tasks-----")[0]
+    names = [ln.split(",")[0].strip('"') for ln in wpt_section.splitlines()
+             if ln and not ln.startswith("name,")]
     assert len(names) == len(set(names))
+
+
+def _tasks_section(text):
+    return text.split("-----Related Tasks-----")[1]
+
+
+def test_cup_all_days_emit_one_task_line_each():
+    bundle = _bundle()
+    tasks = _tasks_section(pkg.build_cup(bundle))
+    lines = [ln for ln in tasks.splitlines() if ln.strip()]
+    assert len(lines) == len(bundle["tasks"])  # comp93 has 6 tasks
+    # each line: task label followed by its ordered turnpoint names
+    race1 = next(ln for ln in lines if ln.startswith('"Race1"'))
+    assert '"Starmoen"' in race1 and '"Hernes krk"' in race1
+
+
+def test_cup_single_day_emits_only_that_task():
+    bundle = _bundle()
+    # task_number 3 is Race1 in the comp93 fixture
+    tasks = _tasks_section(pkg.build_cup(bundle, days=3))
+    lines = [ln for ln in tasks.splitlines() if ln.strip()]
+    assert len(lines) == 1
+    assert lines[0].startswith('"Race1"')
+
+
+def test_single_day_cucx_keeps_all_days_in_db(tmp_path):
+    # DB always carries every day; --day only narrows the .cup task section.
+    out = tmp_path / "day3.cucx"
+    pkg.assemble_cucx(_bundle(), str(out), days=3)
+    with zipfile.ZipFile(out) as z:
+        db_bytes = z.read("contest.db")
+        cup = z.read([n for n in z.namelist() if n.endswith(".cup")][0]).decode()
+    dbp = tmp_path / "d.db"
+    dbp.write_bytes(db_bytes)
+    con = sqlite3.connect(dbp)
+    assert con.execute("SELECT COUNT(*) FROM task").fetchone()[0] == 6
+    assert len(_tasks_section(cup).split("\r\n")[1:-1]) == 1
 
 
 import zipfile

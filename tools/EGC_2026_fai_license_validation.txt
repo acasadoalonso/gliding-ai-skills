@@ -1,0 +1,17 @@
+Reading pilot data from /home/angel/egc2026-ENTRIES-01.07.2026.xlsx
+Total pilots in entry list: 85
+
+
+============================================================
+EGC 2026 FAI License Validation Report
+============================================================
+
+
+--- Pilot: Jan KNISCHEWSKI (DEU) ---
+FAI License Number from entry: nan
+Status: NO FAI LICENSE NUMBER PROVIDED
+
+--- Pilot: Oliver SPRINGER (DEU) ---
+FAI License Number from entry: GER-4264 ID-129831
+Validating license...
+Error reading Excel file: 'NoneType' object is not subscriptable

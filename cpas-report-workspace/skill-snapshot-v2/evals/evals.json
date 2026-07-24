@@ -1,0 +1,35 @@
+{
+  "skill_name": "cpas-report",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "egc-full-report",
+      "prompt": "Generate a summary report about the 2026 24th european gliding championship (2026 EGC) competition using only the cpas MCP, add to the report how many incursions per day and per class, how many days were flown in, how it was the weather forecast, and store the report in .docx format.",
+      "expected_output": "A .docx report built only from cpas MCP data: 9 flown days listed, incursions reported as 0 with the analysis-disabled caveat, per-class attribution impossibility stated, encounters table/narrative, per-day weather with narrative, validation notes.",
+      "files": [],
+      "assertions": [
+        "A valid .docx file exists in outputs/ that python-docx can open and that contains at least one table",
+        "The report states 9 flying days between 8 and 22 July 2026 (8, 9, 10, 13, 16, 17, 18, 20, 22 Jul)",
+        "Airspace incursions are reported as zero AND the report explicitly notes that incursion analysis is disabled in the CPAS competition settings (incursions: false)",
+        "The report states that a per-class breakdown is not derivable from CPAS (no task/class data), instead of inventing per-class numbers",
+        "Proximity encounters (55 total, peaks on 13 Jul with 19 and 22 Jul with 21) are reported as distinct from airspace incursions, never conflated",
+        "A per-day weather summary is present covering the flown days (temperature, precipitation and/or wind), plus a narrative of the forecast evolution",
+        "Total flights reported is 582 (or per-day counts 47/14/70/84/84/84/83/33/83)"
+      ]
+    },
+    {
+      "id": 1,
+      "eval_name": "wgc-generalization",
+      "prompt": "create a cpas report for the 2026 WGC in .docx format",
+      "expected_output": "A .docx report for the 2026 WGC built from cpas MCP data with days flown, incursions (with enabled/disabled caveat as appropriate), encounters, and weather.",
+      "files": [],
+      "assertions": [
+        "A valid .docx file exists in outputs/ that python-docx can open and that contains at least one table",
+        "The report gives a days-flown count consistent with the CPAS data: 12 competition days between 13 and 29 May 2026 (a separate practice_1 entry with 1 flight may be excluded or noted, but must not be silently counted as a 13th competition day without explanation)",
+        "Airspace incursions are reported as zero on every day, with an accurate caveat about whether incursion analysis was enabled for this competition",
+        "Proximity encounters are reported (192 total across the days) and are clearly distinguished from airspace incursions",
+        "A weather section is present with per-day or phase-level forecast information"
+      ]
+    }
+  ]
+}

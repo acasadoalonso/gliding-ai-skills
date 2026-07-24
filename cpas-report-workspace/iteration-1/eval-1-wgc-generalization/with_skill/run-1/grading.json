@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "A valid .docx file exists in outputs/ that python-docx can open and that contains at least one table",
+      "passed": true,
+      "evidence": "CPAS.WGC2026_summary_report_2026-07-24.docx opens; 22 paragraphs, 2 tables."
+    },
+    {
+      "text": "The report gives a days-flown count consistent with the CPAS data: 12 competition days between 13 and 29 May 2026 (a separate practice_1 entry with 1 flight may be excluded or noted, but must not be silently counted as a 13th competition day without explanation)",
+      "passed": true,
+      "evidence": "12 dated days (13-29 May) with 13-14 May identified as training and 10 competition days listed; practice_1 explicitly excluded from the daily table and explained (totals 844 + 1 = 845)."
+    },
+    {
+      "text": "Airspace incursions are reported as zero on every day, with an accurate caveat about whether incursion analysis was enabled for this competition",
+      "passed": true,
+      "evidence": "0 incursions per day with strong caveat: 'the CPAS incursion detector was switched OFF... not evidence that no airspace violations occurred.'"
+    },
+    {
+      "text": "Proximity encounters are reported (192 total across the days) and are clearly distinguished from airspace incursions",
+      "passed": true,
+      "evidence": "192 encounters, 40 m threshold, labelled 'NOT airspace incursions'; per-day counts, closest ~8 m, 74 Team / 11 Dubious review tags."
+    },
+    {
+      "text": "A weather section is present with per-day or phase-level forecast information",
+      "passed": true,
+      "evidence": "Per-day weather columns plus a three-phase narrative (cool damp opening, warming mid-comp, clear finale) tied to ceilings."
+    },
+    {
+      "text": "Per-class handling is correct: the report either discovers the case-sensitive class names (e.g. Open, 18 Metre) via the CPAS task endpoint, or at minimum does not fabricate per-class event counts",
+      "passed": false,
+      "evidence": "Claims 'the task endpoint returns 404 for every class name probed (18m, 20m, open)' - false: capitalised 'Open' and '18 Metre' return task data. No counts fabricated, but the impossibility claim is wrong."
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.8333333333333334,
+    "passed": 5,
+    "failed": 1,
+    "total": 6
+  }
+}

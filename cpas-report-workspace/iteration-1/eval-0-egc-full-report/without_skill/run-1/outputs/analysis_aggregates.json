@@ -1,0 +1,183 @@
+{
+  "days": [
+    {
+      "day": "2026-07-08",
+      "flights": 47,
+      "encounters": 0,
+      "incursions": 0,
+      "alt_max": 2160,
+      "enc_dmin": null,
+      "enc_ids": []
+    },
+    {
+      "day": "2026-07-09",
+      "flights": 14,
+      "encounters": 0,
+      "incursions": 0,
+      "alt_max": 2022,
+      "enc_dmin": null,
+      "enc_ids": []
+    },
+    {
+      "day": "2026-07-10",
+      "flights": 70,
+      "encounters": 2,
+      "incursions": 0,
+      "alt_max": 2045,
+      "enc_dmin": 15.894815838201731,
+      "enc_ids": [
+        "D7",
+        "IV",
+        "L4",
+        "Z3"
+      ]
+    },
+    {
+      "day": "2026-07-13",
+      "flights": 84,
+      "encounters": 19,
+      "incursions": 0,
+      "alt_max": 1698,
+      "enc_dmin": 7.2616326799786,
+      "enc_ids": [
+        "1X",
+        "3",
+        "A3",
+        "CK",
+        "CP",
+        "CX",
+        "D7",
+        "FC",
+        "HV",
+        "KT",
+        "L4",
+        "MB",
+        "MX",
+        "NZ",
+        "OO",
+        "P1",
+        "PL",
+        "SN"
+      ]
+    },
+    {
+      "day": "2026-07-16",
+      "flights": 84,
+      "encounters": 6,
+      "incursions": 0,
+      "alt_max": 2079,
+      "enc_dmin": 8.975297489687554,
+      "enc_ids": [
+        "AU",
+        "BB",
+        "JK",
+        "OK",
+        "XC",
+        "Z3"
+      ]
+    },
+    {
+      "day": "2026-07-17",
+      "flights": 84,
+      "encounters": 1,
+      "incursions": 0,
+      "alt_max": 2660,
+      "enc_dmin": 12.137547106766084,
+      "enc_ids": [
+        "AX",
+        "BB"
+      ]
+    },
+    {
+      "day": "2026-07-18",
+      "flights": 83,
+      "encounters": 2,
+      "incursions": 0,
+      "alt_max": 1757,
+      "enc_dmin": 19.576784378871224,
+      "enc_ids": [
+        "BB",
+        "CH",
+        "M7",
+        "MN"
+      ]
+    },
+    {
+      "day": "2026-07-20",
+      "flights": 33,
+      "encounters": 4,
+      "incursions": 0,
+      "alt_max": 1835,
+      "enc_dmin": 20.89192075237308,
+      "enc_ids": [
+        "56",
+        "CP",
+        "HV",
+        "KT",
+        "MX"
+      ]
+    },
+    {
+      "day": "2026-07-22",
+      "flights": 83,
+      "encounters": 21,
+      "incursions": 0,
+      "alt_max": 2614,
+      "enc_dmin": 7.627193644173237,
+      "enc_ids": [
+        "451",
+        "56",
+        "A3",
+        "AL",
+        "AU",
+        "CA",
+        "CP",
+        "CX",
+        "EEE",
+        "HI",
+        "HR3",
+        "IV",
+        "JPA",
+        "KT",
+        "LOT",
+        "MX",
+        "NX",
+        "NZ",
+        "OO",
+        "P1",
+        "PP",
+        "XW",
+        "ZS"
+      ]
+    }
+  ],
+  "total_enc_aircraft": 42,
+  "top_enc": [
+    {
+      "id": "KT",
+      "enc": 14
+    },
+    {
+      "id": "A3",
+      "enc": 9
+    },
+    {
+      "id": "NZ",
+      "enc": 6
+    },
+    {
+      "id": "HV",
+      "enc": 6
+    },
+    {
+      "id": "BB",
+      "enc": 6
+    }
+  ],
+  "bbox": {
+    "minLng": 15.893333333338235,
+    "minLat": 50.70138333334898,
+    "maxLng": 20.408916666672962,
+    "maxLat": 52.60070000001623
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "totals": {
+    "total_encounters": 192,
+    "total_incursions": 0,
+    "total_flights": 845,
+    "encounter_status": {
+      "Dubious": 11,
+      "Team": 74,
+      "unreviewed": 107
+    },
+    "flarm_no_match_encounters": 21,
+    "close_encounters_under_20m": 27,
+    "aircraft_total": 66
+  },
+  "days": [
+    {
+      "day": "2026-05-13",
+      "flights": 58,
+      "encounters": 3,
+      "incursions": 0,
+      "km_total": 66.1,
+      "min_dmin": 26.7,
+      "team_encounters": 2,
+      "dubious_encounters": 0,
+      "flarm_no_match": 1
+    },
+    {
+      "day": "2026-05-14",
+      "flights": 57,
+      "encounters": 2,
+      "incursions": 0,
+      "km_total": 27.9,
+      "min_dmin": 32.6,
+      "team_encounters": 1,
+      "dubious_encounters": 0,
+      "flarm_no_match": 1
+    },
+    {
+      "day": "2026-05-19",
+      "flights": 73,
+      "encounters": 17,
+      "incursions": 0,
+      "km_total": 394.2,
+      "min_dmin": 10.3,
+      "team_encounters": 9,
+      "dubious_encounters": 0,
+      "flarm_no_match": 2
+    },
+    {
+      "day": "2026-05-20",
+      "flights": 73,
+      "encounters": 26,
+      "incursions": 0,
+      "km_total": 738.6,
+      "min_dmin": 13.5,
+      "team_encounters": 5,
+      "dubious_encounters": 1,
+      "flarm_no_match": 4
+    },
+    {
+      "day": "2026-05-21",
+      "flights": 73,
+      "encounters": 10,
+      "incursions": 0,
+      "km_total": 213.6,
+      "min_dmin": 19.4,
+      "team_encounters": 3,
+      "dubious_encounters": 0,
+      "flarm_no_match": 1
+    },
+    {
+      "day": "2026-05-22",
+      "flights": 72,
+      "encounters": 11,
+      "incursions": 0,
+      "km_total": 339.9,
+      "min_dmin": 8.1,
+      "team_encounters": 3,
+      "dubious_encounters": 3,
+      "flarm_no_match": 1
+    },
+    {
+      "day": "2026-05-23",
+      "flights": 73,
+      "encounters": 25,
+      "incursions": 0,
+      "km_total": 665.6,
+      "min_dmin": 14.3,
+      "team_encounters": 9,
+      "dubious_encounters": 2,
+      "flarm_no_match": 2
+    },
+    {
+      "day": "2026-05-24",
+      "flights": 73,
+      "encounters": 26,
+      "incursions": 0,
+      "km_total": 730.6,
+      "min_dmin": 15,
+      "team_encounters": 18,
+      "dubious_encounters": 1,
+      "flarm_no_match": 2
+    },
+    {
+      "day": "2026-05-26",
+      "flights": 73,
+      "encounters": 21,
+      "incursions": 0,
+      "km_total": 525.1,
+      "min_dmin": 8.1,
+      "team_encounters": 6,
+      "dubious_encounters": 0,
+      "flarm_no_match": 1
+    },
+    {
+      "day": "2026-05-27",
+      "flights": 73,
+      "encounters": 20,
+      "incursions": 0,
+      "km_total": 532.3,
+      "min_dmin": 11.2,
+      "team_encounters": 6,
+      "dubious_encounters": 2,
+      "flarm_no_match": 1
+    },
+    {
+      "day": "2026-05-28",
+      "flights": 73,
+      "encounters": 8,
+      "incursions": 0,
+      "km_total": 208.5,
+      "min_dmin": 23.2,
+      "team_encounters": 2,
+      "dubious_encounters": 2,
+      "flarm_no_match": 0
+    },
+    {
+      "day": "2026-05-29",
+      "flights": 73,
+      "encounters": 23,
+      "incursions": 0,
+      "km_total": 536.9,
+      "min_dmin": 11.7,
+      "team_encounters": 10,
+      "dubious_encounters": 0,
+      "flarm_no_match": 5
+    },
+    {
+      "day": "practice_1",
+      "flights": 1,
+      "encounters": 0,
+      "incursions": 0,
+      "km_total": 0,
+      "min_dmin": null,
+      "team_encounters": 0,
+      "dubious_encounters": 0,
+      "flarm_no_match": 0
+    }
+  ],
+  "fr_types": {
+    "LXNAV,LX9000": 35,
+    "LXNAV,LX9000F": 12,
+    "LXNAV,LX9000PF": 135,
+    "LXNAV,LX9050PF": 12,
+    "LXNAV,LX9070": 115,
+    "LXNAV,LX9070F": 24,
+    "LXNAV,LX9070PF": 471,
+    "LXNAV,S10": 17,
+    "Naviter,Oudie": 12,
+    "Naviter,Oudie-IGC,Y": 12
+  },
+  "fr_issues": {
+    "high_baro_error_flights": [
+      {
+        "id": "2L",
+        "baro_error": 31
+      },
+      {
+        "id": "BI",
+        "baro_error": 11
+      },
+      {
+        "id": "FM",
+        "baro_error": 11
+      },
+      {
+        "id": "MR",
+        "baro_error": 23
+      }
+    ],
+    "alt_anomaly_flights_over_0_1": 70,
+    "implausible_encounter_aircraft": 11
+  }
+}

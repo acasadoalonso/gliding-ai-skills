@@ -1,0 +1,22 @@
+[
+  {"query": "Generate a summary report about the 2026 EGC competition using only the cpas MCP, add how many incursions per day and per class, how many days were flown in and how the weather forecast was, store it in src/reports as .docx", "should_trigger": true},
+  {"query": "how many incursions were there at the wgc2026? we have the cpas server connected", "should_trigger": true},
+  {"query": "make me a safety summary for the 2026 FCC — proximity encounters, incursions and per-day weather — as a word document", "should_trigger": true},
+  {"query": "use cpas to tell me how many days were actually flown at the EGC and what the weather was like each day, then write it up as a docx", "should_trigger": true},
+  {"query": "cpas report for the sgp final in st auban please", "should_trigger": true},
+  {"query": "boss wants a docx tomorrow morning with the egc encounter stats per day (that proximity analysis from cpas) — can you put one together in src/reports?", "should_trigger": true},
+  {"query": "were there any airspace incursions during the worlds in May? check the cpas data", "should_trigger": true},
+  {"query": "refresh the CPAS.24th-fai-egc summary report with the latest data", "should_trigger": true},
+  {"query": "can u check cpas and tell me how many days got flown at the 2026 fcc + incursions per class, need it as a word doc", "should_trigger": true},
+  {"query": "give me a per-day breakdown of the close encounters between gliders at the EGC from the cpas analysis, docx format", "should_trigger": true},
+  {"query": "generate the daily competition report for 24-fai-egc — flights, km and hours flown per class plus the top 5 standings", "should_trigger": false},
+  {"query": "download all the IGC files for the EGC for 2026-07-22", "should_trigger": false},
+  {"query": "validate the flarm trackers for egc2026 against ktrax", "should_trigger": false},
+  {"query": "who won the Open class at wgc2026? check soaringspot", "should_trigger": false},
+  {"query": "check the igc files in IGCfiles/24th-fai-egc_2026-07-22 for conformance and tell me which ones show engine noise", "should_trigger": false},
+  {"query": "what's the incursion_threshold setting for the EGC on the cpas server?", "should_trigger": false},
+  {"query": "make a cucx file for SeeYou from SGP comp 88, all days", "should_trigger": false},
+  {"query": "compare the club class handicaps assigned at the egc against the official IGC handicap list", "should_trigger": false},
+  {"query": "what was the weather like in Ostrów Wielkopolski last week?", "should_trigger": false},
+  {"query": "write a report on the FAI team cup standings at wgc2026 using the soaringspot data", "should_trigger": false}
+]

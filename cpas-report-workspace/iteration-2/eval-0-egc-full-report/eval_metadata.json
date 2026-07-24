@@ -1,0 +1,28 @@
+{
+  "eval_id": 0,
+  "eval_name": "egc-full-report",
+  "prompt": "Generate a summary report about the 2026 24th european gliding championship (2026 EGC) competition using only the cpas MCP, add to the report how many incursions per day and per class, how many days were flown in, how it was the weather forecast, and store the report in .docx format.",
+  "assertions": [
+    {
+      "text": "A valid .docx file exists in outputs/ that python-docx can open and that contains at least one table"
+    },
+    {
+      "text": "The report states 9 flying days between 8 and 22 July 2026 (8, 9, 10, 13, 16, 17, 18, 20, 22 Jul)"
+    },
+    {
+      "text": "Airspace incursions are reported as zero AND the report explicitly notes that incursion analysis is disabled in the CPAS competition settings (incursions: false)"
+    },
+    {
+      "text": "Per-class handling is correct: the report either discovers the case-sensitive class names (Club, Standard) via the CPAS task endpoint and attributes days/events accordingly, or at minimum does not fabricate per-class event counts (encounter/incursion records carry no class labels)"
+    },
+    {
+      "text": "Proximity encounters (55 total, peaks on 13 Jul with 19 and 22 Jul with 21) are reported as distinct from airspace incursions, never conflated"
+    },
+    {
+      "text": "A per-day weather summary is present covering the flown days (temperature, precipitation and/or wind), plus a narrative of the forecast evolution"
+    },
+    {
+      "text": "Total flights reported is 582 (or per-day counts 47/14/70/84/84/84/83/33/83)"
+    }
+  ]
+}

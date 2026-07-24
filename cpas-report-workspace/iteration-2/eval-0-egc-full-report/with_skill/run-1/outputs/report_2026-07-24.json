@@ -1,0 +1,73 @@
+{
+  "title": "24th FAI European Gliding Championship 2026 (2026 EGC)",
+  "subtitle": "Summary report - data source: CPAS MCP server only (competition key 028cb391-202a-4cdd-bb2d-bbff50f4fdf2, slug 24th-fai-egc)",
+  "intro": "Report generated on 2026-07-24. Competition status on CPAS: ongoing (competitionEnded = false, autoFetch enabled, latest IGC files found 2026-07-24, purge scheduled 2026-08-10). All figures below come exclusively from the CPAS flight-safety analysis; CPAS holds no scores or standings.",
+  "overview": [
+    ["Competition", "2026 EGC - 24th FAI European Gliding Championship"],
+    ["Venue", "Michalkow airfield, Ostrow Wielkopolski, Poland (51.70 N, 17.85 E, elev. ~142 m)"],
+    ["Time zone", "Europe/Warsaw"],
+    ["Classes (found via CPAS task probes)", "Club and Standard (probes for 15 Metre, 18 Metre, 20 Metre Multi Seat and Open all returned 404)"],
+    ["Flying days ingested", "9 (3 official training days + 6 scored competition days)"],
+    ["Total flights analysed", "582"],
+    ["Airspace-incursion analysis", "DISABLED in CPAS settings (incursions = false, threshold 50 m) - 0 events recorded"],
+    ["Terrain-clearance analysis", "DISABLED in CPAS settings (terrain = false) - 0 events recorded"],
+    ["Proximity encounters (< 30 m)", "55 in total"],
+    ["Flight area (bounding box)", "50.70-52.60 N, 15.89-20.41 E"]
+  ],
+  "days_flown": [
+    "CPAS has ingested flights on 9 days between 8 and 22 July 2026. Task probes per class separate them into 3 official training days and 6 scored competition days.",
+    "Training: 8 July (AAT practice task, 47 flights), 9 July ('Official Training day2' racing task, 14 flights) and 10 July ('Official Training day3' racing task, 70 flights) - all with result_status 'practice'.",
+    "Scored competition days (result_status 'official'): 13 July (Task 1, AAT in both classes), 16 July (Task 2, AAT in both classes), 17 July (Task 3, Club AAT 310 km nominal / Standard 308 km racing task), 18 July (Task 4, AAT in both classes), 20 July (Task 5, Club AAT 263 km nominal - see class note below) and 22 July (Task 6, racing tasks: Club 409 km, Standard 420 km).",
+    "So as of the generation date the championship has flown on 9 days in total, 6 of them scored competition days per class. The competition is still running (competitionEnded = false), so further task days may follow."
+  ],
+  "daily": [
+    {"day": "08 Jul (training)", "flights": 47, "incursions": 0, "encounters": 0, "weather": "Light drizzle", "tmax": 20.5, "tmin": 11.8, "precip_mm": 0.5, "precip_h": 3, "wind_kmh": 27.5, "wind_dir": "WNW"},
+    {"day": "09 Jul (training)", "flights": 14, "incursions": 0, "encounters": 0, "weather": "Light drizzle", "tmax": 22.0, "tmin": 14.2, "precip_mm": 0.9, "precip_h": 5, "wind_kmh": 25.7, "wind_dir": "NW"},
+    {"day": "10 Jul (training)", "flights": 70, "incursions": 0, "encounters": 2, "weather": "Light drizzle", "tmax": 23.6, "tmin": 10.9, "precip_mm": 0.4, "precip_h": 4, "wind_kmh": 20.3, "wind_dir": "NNW"},
+    {"day": "13 Jul (Task 1)", "flights": 84, "incursions": 0, "encounters": 19, "weather": "Light drizzle", "tmax": 25.9, "tmin": 14.4, "precip_mm": 0.2, "precip_h": 1, "wind_kmh": 14.1, "wind_dir": "N"},
+    {"day": "16 Jul (Task 2)", "flights": 84, "incursions": 0, "encounters": 6, "weather": "Light drizzle", "tmax": 27.1, "tmin": 16.2, "precip_mm": 0.8, "precip_h": 5, "wind_kmh": 11.7, "wind_dir": "E"},
+    {"day": "17 Jul (Task 3)", "flights": 84, "incursions": 0, "encounters": 1, "weather": "Moderate rain", "tmax": 30.5, "tmin": 17.3, "precip_mm": 6.2, "precip_h": 4, "wind_kmh": 15.4, "wind_dir": "S"},
+    {"day": "18 Jul (Task 4)", "flights": 83, "incursions": 0, "encounters": 2, "weather": "Light drizzle", "tmax": 25.2, "tmin": 17.9, "precip_mm": 2.1, "precip_h": 14, "wind_kmh": 19.1, "wind_dir": "W"},
+    {"day": "20 Jul (Task 5)", "flights": 33, "incursions": 0, "encounters": 4, "weather": "Moderate drizzle", "tmax": 18.9, "tmin": 11.8, "precip_mm": 2.1, "precip_h": 9, "wind_kmh": 22.0, "wind_dir": "WSW"},
+    {"day": "22 Jul (Task 6)", "flights": 83, "incursions": 0, "encounters": 21, "weather": "Light drizzle", "tmax": 20.4, "tmin": 9.7, "precip_mm": 0.4, "precip_h": 3, "wind_kmh": 21.8, "wind_dir": "W"}
+  ],
+  "sections": [
+    {
+      "heading": "Incursions per day and per class",
+      "paragraphs": [
+        "Airspace incursions recorded by CPAS: 0 on every day and therefore 0 for both the Club and the Standard class. IMPORTANT CAVEAT: the incursion detector is switched OFF for this competition (settings show incursions = false, with a configured threshold of 50 m), and the terrain-clearance detector is also off. The per-day incursion arrays are empty because the analysis never ran - a disabled detector is not evidence of a clean competition, so no conclusion about actual airspace violations can be drawn from CPAS for the 2026 EGC.",
+        "Proximity encounters (a different metric - close-proximity events between gliders within the 30 m threshold, not airspace violations) WERE analysed: 55 encounters in total across the 9 flying days."
+      ],
+      "bullets": [
+        "Encounters per day: 08 Jul: 0 - 09 Jul: 0 - 10 Jul (training): 2 - 13 Jul (Task 1): 19 - 16 Jul (Task 2): 6 - 17 Jul (Task 3): 1 - 18 Jul (Task 4): 2 - 20 Jul (Task 5): 4 - 22 Jul (Task 6): 21.",
+        "Peak days: 22 July (21 encounters, mostly gaggle-thermalling events - the sampled records show 5+ gliders circling together) and 13 July (19 encounters on the first scored task).",
+        "Most involved competition numbers (CNs): KT (14 encounters), A3 (9), NZ (6), HV (6), BB (6), Z3 (5), CP (5), MX (5).",
+        "Per-class attribution: CPAS encounter records carry competition numbers but no class labels, and on 8 of the 9 days both classes were airborne, so encounters cannot be split reliably between Club and Standard. The only partial exception is 20 July, where only the Club task is retrievable from CPAS; its 4 encounters most plausibly belong to Club (see class note below).",
+        "None of the 55 encounters carries a reviewer comment/status in CPAS (no events tagged e.g. 'Team' yet)."
+      ],
+      "paragraphs_after": [
+        "Class note for 20 July: the Standard-class task probe returns 404 for that day, while Club Task 5 ('CLUB TASK A / DAY 9') is official. However, Standard's task numbering jumps from Task 4 (18 July) to Task 6 (22 July), which implies a Standard Task 5 was scored somewhere; its data is simply not retrievable from CPAS. The low flight count (33) suggests a reduced launch, but the attribution of the day's 4 encounters to Club alone should be treated as probable, not certain."
+      ]
+    },
+    {
+      "heading": "Weather forecast over the championship",
+      "paragraphs": [
+        "Per-day weather comes from CPAS's open-meteo feed for the site (51.70 N, 17.87 E, fetched 2026-07-24). The championship weather falls into three phases:"
+      ],
+      "bullets": [
+        "Early phase (8-13 July): a cool, breezy north-westerly regime that gradually improved. Training days had light drizzle, 20-24 C and fresh WNW-NNW winds up to 27 km/h; by Task 1 on 13 July the wind had eased to 14 km/h from the north with only 0.2 mm of precipitation and 26 C - the best climbs of the first week still only reached ~1,700 m AMSL on task day.",
+        "Mid phase (16-18 July): the warmest spell. Easterly then southerly flow brought 27-30.5 C; 17 July was the hottest day and produced the highest climbs of the contest so far (max altitude ~2,660 m) but ended with moderate rain (6.2 mm), and 18 July stayed warm but wet (2.1 mm over 14 h) with the ceiling dropping to ~1,760 m.",
+        "Late phase (20-22 July): a cooler, unsettled westerly regime. 20 July was the poorest day - 18.9 C, moderate drizzle over 9 h and 22 km/h WSW wind - matching the smallest grid of the scored days (33 flights). 22 July recovered to a dry, cool westerly day (20.4 C, 0.4 mm) with excellent convection (max altitude ~2,614 m), the longest tasks of the championship (409-420 km racing tasks) and also the most proximity encounters (21).",
+        "Gaps in the byDay map (11-12, 14-15, 19, 21 July) correspond to days with no ingested flights - rest days or days lost to weather."
+      ]
+    },
+    {
+      "heading": "Data-quality notes (CPAS validation)",
+      "paragraphs": [
+        "The CPAS flight-recorder validation flags one anomaly type: 3 flights logged with a Naviter Oudie-IGC (firmware 9.47.001) carry a suggested altitude correction of -1, i.e. a systematic offset in the recorded altitude datum. All other recorders in the field validated cleanly.",
+        "Barometric consistency across the fleet is good (day-average baro error ~1.7 m on the first training day) and the analysis flags implausible traces per encounter; the sampled encounter records show all participants marked plausible."
+      ]
+    }
+  ],
+  "output": "/home/angel/.claude/skills/cpas-report-workspace/iteration-2/eval-0-egc-full-report/with_skill/run-1/outputs/CPAS.2026_EGC_summary_report_2026-07-24.docx"
+}

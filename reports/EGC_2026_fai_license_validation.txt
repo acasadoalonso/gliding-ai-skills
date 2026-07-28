@@ -1,0 +1,118 @@
+# EGC 2026 FAI License Validation Report
+
+**Date of Validation:** July 2026
+**Source Data:** egc2026-ENTRIES-01.07.2026.xlsx
+**Total Pilots Processed:** 85
+
+---
+
+## 1. Executive Summary
+
+The validation process cross-referenced the FAI license numbers provided in the EGC 2026 entry list against the official FAI Extranet records for each pilot's respective National Air Sport Control (NAC).
+
+| Status | Count | Description |
+| :--- | :--- | :--- |
+| **VALID** | 36 | License number matched an active record in the FAI database. |
+| **FOUND BY NAME** | 36 | Provided number was incorrect/non-standard, but pilot was found via name match. |
+| **INVALID** | 7 | Provided license number was not found in the pilot's national records. |
+| **NO LICENSE PROVIDED** | 6 | No license number was listed, and no record was found via name match. |
+| **TOTAL** | **85** | |
+
+---
+
+## 2. Detailed Findings
+
+### 2.1 Validated Licenses
+The following pilots have verified, active FAI sporting licenses:
+
+* Alexandre FIERAIN (FRA) - License: 162312
+* Andrii Lohvynchuk (UKR) - License: 150609
+* Anton Minskii (ISR) - License: 177834
+* Aurélien Doriat (FRA) - License: 162511
+* Balázs Endrődi (HUN) - License: 91509
+* Bart Leysen (BEL) - License: 184757
+* Daan Spruyt (BEL) - License: 53330
+* Dani Zaninovic (CRO) - License: 61382
+* Dino German Ghioni (ARG) - License: 90235
+* Dylan Osolian (SWE) - License: 147591
+* Filip Bojanowski (DEN) - License: 69883
+* Francis Svobodny (FRA) - License: 78950
+* Frane Franic (CRO) - License: 61380
+* Felipe Cvitanich (DEN) - License: 17237
+* GVIDAS SABECKIS (LTU) - License: 112239
+* György Gulyás (HUN) - License: 74135
+* Jan Knischewski (GER) - License: 162862
+* Jozef kell (BEL) - License: 53335
+* Julius Lübstorf (SUI) - License: 182809
+* Lukáš Kříž (CZE) - License: 162861
+* Marius Pluščauskas (LTU) - License: 27170
+* Matias Lanzinetti (ARG) - License: 90192
+* Michiel Van den Borne (BEL) - License: 184758
+* Miloslav Cink (CZE) - License: 16585
+* Norbert Alin Scarlat (ROU) - License: 85852
+* Olena Yakymchuk (UKR) - License: 78459
+* Oscar Butlin (GBR) - License: 167373
+* Péter Bánki (HUN) - License: 74173
+* Philippe Lata (FRA) - License: 162091
+* Rasmus Ørskov (DEN) - License: 82833
+* Roelof Corporaal (NED) - License: 95498
+* Šimon Šiška (SVK) - License: 109928
+* Tano Cavattoni (ITA) - License: 81865
+* Vytautas Rasimavicius (LTU) - License: 67629
+
+### 2.2 Corrected via Name Match
+The following pilots provided non-standard or incorrect license formats, but were successfully identified in the FAI database using their names:
+
+* Alessandro Bassalti (ITA): Provided `1` $\rightarrow$ Correct: `121629`
+* Benjamin Payne (GBR): Provided `40136` $\rightarrow$ Correct: `135956`
+* Darius Gudziunas (LTU): License: 27173
+* Edmund Schuller (SVK): Provided `2114` $\rightarrow$ Correct: `29030`
+* Elek Czigler (HUN): License: 72649
+* Jan Kretzschmar (GER): Provided `GER-4342` $\rightarrow$ Correct: `79219`
+* Jan Pavlík (CZE): Provided `CZE-0201` $\rightarrow$ Correct: `30467`
+* Jakub Barszcz (POL): Provided `POL-71/05` $\rightarrow$ Correct: `30910`
+* Jacek Flis (POL): Provided `POL-127/10` $\rightarrow$ Correct: `30908`
+* Jan Knischewski (GER): License: 162862
+* Jeroen Jennen (BEL): License: 53334
+* Jonas Florin (GER): Provided `GER-5532 ID-182581` $\rightarrow$ Correct: `182581`
+* Karel Novák (CZE): License: 65407
+* Łukasz Błaszczyk (POL): Provided `POL-104/04` $\rightarrow$ Correct: `30815`
+* Łukasz Grabowski (POL): Provided `POL-110/06` $\rightarrow$ Correct: `30900`
+* Mark Wering (NED): Provided `707364` $\rightarrow$ Correct: `21388`
+* Mikołaj Zdun (POL): Provided `15/04` $\rightarrow$ Correct: `30917`
+* Oliver Springer (GER): Provided `GER-4264 ID-129831` $\rightarrow$ Correct: `129831`
+* Paweł Wojciechowski (POL): Provided `POL-16/04` $\rightarrow$ Correct: `30902`
+* Paul Fritche (GBR): Provided `2073` $\rightarrow$ Correct: `90281`
+* Riccardo Brigliadori (ITA): Provided `1669` $\rightarrow$ Correct: `20421`
+* Robin Förster (GER): License: 19877
+* Robin Smit (NED): Provided `712325` $\rightarrow$ Correct: `70229`
+* Sebastiano Brigliadori (ITA): Provided `D4053` $\rightarrow$ Correct: `173949`
+* Simon Gantner (SUI): License: 26212
+* Tano Cavattoni (ITA): Provided `D3656` $\rightarrow$ Correct: `81865`
+* Tomasz Rubaj (POL): Provided `POL-75/04` $\rightarrow$ Correct: `30751`
+* Timothy Scott (GBR): Provided `1685` $\rightarrow$ Correct: `111065`
+* Toni Kittler (GER): License: 162863
+* Uffe Edslev (DEN): License: 81383
+* Vladimir Foltin (SVK): License: 62709
+* Yves Schnetzer (SUI): Provided `166804` $\rightarrow$ Correct: `158480`
+
+### 2.3 Invalid/Unverifiable Licenses
+The following pilots provided license numbers that could not be found in their respective national FAI records:
+
+* Claudia Hill (GBR) — License 3349
+* Jaroslav TOMANA (CZE) — License CZE-0327
+* Kim Toppari (FIN) — License 121212
+* Pop Victor-Alex (ROU) — License 37
+* Sami Rissanen (FIN) — License 82133
+* Sara Salonen (FIN) — License 136332
+* Tudor BAJENARU (ROU) — License 292
+
+### 2.4 Missing Information
+The following pilots did not provide a license number and could not be verified via name match:
+
+* Antolin Javier Valdes (ESP)
+* Jaume Prats (ESP)
+* Joris Vainius (LTU)
+* Kévin Faur (FRA)
+* Piers-Rex Murray (GBR)
+* Thies Bruins (NED)

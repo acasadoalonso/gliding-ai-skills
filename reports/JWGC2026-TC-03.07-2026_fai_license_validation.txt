@@ -1,0 +1,60 @@
+# JWGC 2026 Team Captains FAI License Validation Report
+
+**Date of Validation:** 2026-07-03
+**Source Data:** JWGC2026-TC-03.07-2026.xlsx
+**Total Pilots Processed:** 23
+
+---
+
+## 1. Executive Summary
+
+| Status | Count | Description |
+| :--- | :--- | :--- |
+| **VALID** | 10 | Licence number matched an active FAI record. |
+| **FOUND BY NAME** | 5 | Number wrong/missing, pilot found via name match. |
+| **INVALID** | 3 | Provided number not found in the national records. |
+| **NO LICENSE PROVIDED** | 5 | No number listed and no name match found. |
+| **TOTAL** | **23** | |
+
+---
+
+## 2. Detailed Findings
+
+### 2.1 Validated Licenses
+The following pilots have verified, active FAI sporting licenses:
+
+* Mandy Temple (AUS) - License: 183469, valid until 2026-12-31
+* Christine Gabler (BRA) - License: 183834, valid until 2027-02-28
+* Sergio Lousada (BRA) - License: 183833, valid until 2027-02-28
+* Lukas Hynek (CZE) - License: 16705, valid until 2026-12-31
+* Karsten Leuker (GER) - License: 109689, valid until 2026-12-31
+* Péter Szabó (HUN) - License: 73918, valid until 2026-12-31
+* Titas Jovaiša (LTU) - License: 183227, valid until 2026-12-31
+* Ger Kwant (NED) - License: 96949, valid until 2026-12-31
+* Julius Lübstorf (SUI) - License: 182809, valid until 2027-03-31
+* Lina Nimue Kutschle (SWE) - License: 184552, valid until 2027-04-09
+
+### 2.2 Corrected via Name Match
+Number was non-standard, incorrect, or absent; pilot identified by name:
+
+* Guillaume Dohet (BEL): License: 184756 (no number on entry)
+* Éric Napoléon (FRA): License: 59709 (no number on entry)
+* Alex O'Keefe (GBR): License: 113263 (no number on entry)
+* Marie Pontoppidan (NOR): License: 179776 (no number on entry)
+* Dorota Pietrzyk-Matusik (POL): License: 176042 (no number on entry)
+
+### 2.3 Invalid/Unverifiable Licenses
+Provided license numbers that could not be found in national FAI records:
+
+* Tommy Giromini (ARG) — License 177163
+* Hannu Halonen (FIN) — License 10061
+* William Richard Dale (RSA) — License 1485
+
+### 2.4 Missing Information
+No license number provided and no name match:
+
+* Philip Heinrich (AUT)
+* Emil Deboe (DEN)
+* Ivan Zizek (SLO)
+* Branislav Jesensky (SVK)
+* John Barnahall (USA)

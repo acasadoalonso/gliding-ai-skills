@@ -1,0 +1,122 @@
+# EGC 2026 FAI License Validation Report
+
+**Date of Validation:** 2026-07-02
+**Source Data:** egc2026-ENTRIES-01.07.2026.xlsx
+**Total Pilots Processed:** 85
+
+---
+
+## 1. Executive Summary
+
+| Status | Count | Description |
+| :--- | :--- | :--- |
+| **VALID** | 36 | Licence number matched an active FAI record. |
+| **FOUND BY NAME** | 38 | Number wrong/missing, pilot found via name match. |
+| **INVALID** | 6 | Provided number not found in the national records. |
+| **NO LICENSE PROVIDED** | 5 | No number listed and no name match found. |
+| **TOTAL** | **85** | |
+
+---
+
+## 2. Detailed Findings
+
+### 2.1 Validated Licenses
+The following pilots have verified, active FAI sporting licenses:
+
+* Dino German Ghioni (ARG) - License: 90235, valid until 2027-06-30
+* Matias Lanzinetti (ARG) - License: 90192, valid until 2027-06-30
+* Bart Leysen (BEL) - License: 184757, valid until 2027-03-31
+* Michiel Van den Borne (BEL) - License: 184758, valid until 2027-03-31
+* Jozef kell (BEL) - License: 53335, valid until 2027-03-31
+* Frane Franic (CRO) - License: 61380, valid until 2026-12-31
+* Dani Zaninovic (CRO) - License: 61382, valid until 2026-12-31
+* Ivan Harašta (CZE) - License: 64941, valid until 2026-12-31
+* Lukáš Kříž (CZE) - License: 162861, valid until 2026-12-31
+* Pavel Trybenekr (CZE) - License: 78996, valid until 2026-12-31
+* Filip Bojanowski (DEN) - License: 69883, valid until 2027-03-23
+* Felipe Cvitanich (DEN) - License: 17237, valid until 2027-03-17
+* Michael Mix (DEN) - License: 54557, valid until 2027-05-06
+* Rasmus Ørskov (DEN) - License: 82833, valid until 2027-02-25
+* Marilyne Abadie Bérard (FRA) - License: 140828, valid until 2026-12-31
+* Aurélien Doriat (FRA) - License: 162511, valid until 2026-12-31
+* Alexandre FIERAIN (FRA) - License: 162312, valid until 2026-12-31
+* Philippe Lata (FRA) - License: 162091, valid until 2026-12-31
+* Francis Svobodny (FRA) - License: 78950, valid until 2026-12-31
+* Oscar Butlin (GBR) - License: 167373, valid until 2026-12-31
+* Péter Bánki (HUN) - License: 74173, valid until 2026-12-31
+* Balázs Endrődi (HUN) - License: 91509, valid until 2026-12-31
+* Ferenc TAMÁS (HUN) - License: 74028, valid until 2026-12-31
+* Anton Minskii (ISR) - License: 177834, valid until 2027-01-01
+* Marius Pluščauskas (LTU) - License: 27170, valid until 2026-12-31
+* Vytautas Rasimavicius (LTU) - License: 67629, valid until 2026-12-31
+* GVIDAS SABECKIS (LTU) - License: 112239, valid until 2026-12-31
+* Roelof Corporaal (NED) - License: 95498, valid until 2026-12-31
+* Norbert Alin Scarlat (ROU) - License: 85852, valid until 2026-12-31
+* Simon Gantner (SUI) - License: 26212, valid until 2027-03-31
+* Julius Lübstorf (SUI) - License: 182809, valid until 2027-03-31
+* Vladimir Foltin (SVK) - License: 62709, valid until 2026-12-31
+* Šimon Šiška (SVK) - License: 109928, valid until 2026-12-31
+* Dylan Osolian (SWE) - License: 147591, valid until 2027-02-25
+* Andrii Lohvynchuk (UKR) - License: 150609, valid until 2026-12-31
+* Olena Yakymchuk (UKR) - License: 78459, valid until 2026-12-31
+
+### 2.2 Corrected via Name Match
+Number was non-standard, incorrect, or absent; pilot identified by name:
+
+* Michael Rass (AUT): Provided `7200050235` -> Correct: `57979`
+* Jeroen Jennen (BEL): License: 53334 (no number on entry)
+* Daan Spruyt (BEL): License: 53330 (no number on entry)
+* Miloslav Cink (CZE): License: 16585 (no number on entry)
+* Karel Novák (CZE): License: 65407 (no number on entry)
+* Jan Pavlík (CZE): Provided `CZE-0201` -> Correct: `30467`
+* Jaroslav TOMANA (CZE): Provided `CZE-0327` -> Correct: `29109`
+* Uffe Edslev (DEN): License: 81383 (no number on entry)
+* Paul Fritche (GBR): Provided `2073` -> Correct: `90281`
+* Benjamin Payne (GBR): Provided `40136` -> Correct: `135956`
+* Timothy Scott (GBR): Provided `1685` -> Correct: `111065`
+* Jonas Florin (GER): Provided `GER-5532 ID-182581` -> Correct: `182581`
+* Robin Förster (GER): License: 19877 (no number on entry)
+* Toni Kittler (GER): License: 162863 (no number on entry)
+* Jan Knischewski (GER): License: 162862 (no number on entry)
+* Jan Knischewski (GER): License: 162862 (no number on entry)
+* Jan Kretzschmar (GER): Provided `GER-4342` -> Correct: `79219`
+* Oliver Springer (GER): Provided `GER-4264 ID-129831` -> Correct: `129831`
+* Elek Czigler (HUN): License: 72649 (no number on entry)
+* György Gulyás (HUN): License: 74135 (no number on entry)
+* Alessandro Bassalti (ITA): Provided `1` -> Correct: `121629`
+* Sebastiano Brigliadori (ITA): Provided `D4053` -> Correct: `173949`
+* riccardo Brigliadori (ITA): Provided `1669` -> Correct: `20421`
+* Tano Cavattoni (ITA): Provided `D3656` -> Correct: `81865`
+* Darius Gudziunas (LTU): License: 27173 (no number on entry)
+* Thies Bruins (NED): License: 129724 (no number on entry)
+* Robin Smit (NED): Provided `712325` -> Correct: `70229`
+* Mark Wering (NED): Provided `707364` -> Correct: `21388`
+* Jakub Barszcz (POL): Provided `POL-71/05` -> Correct: `30910`
+* Łukasz Błaszczyk (POL): Provided `POL-104/04` -> Correct: `30815`
+* Jacek Flis (POL): Provided `POL-127/10` -> Correct: `30908`
+* Łukasz Grabowski (POL): Provided `POL-110/06` -> Correct: `30900`
+* Tomasz Rubaj (POL): Provided `POL-75/04` -> Correct: `30751`
+* Paweł Wojciechowski (POL): Provided `POL-16/04` -> Correct: `30902`
+* Mikołaj Zdun (POL): Provided `15/04` -> Correct: `30917`
+* Yves Schnetzer (SUI): Provided `166804` -> Correct: `158480`
+* Pascal Zollikofer (SUI): Provided `174695` -> Correct: `110555`
+* Edmund Schuller (SVK): Provided `2114` -> Correct: `29030`
+
+### 2.3 Invalid/Unverifiable Licenses
+Provided license numbers that could not be found in national FAI records:
+
+* Sami Rissanen (FIN) — License 82133
+* Sara Salonen (FIN) — License 136332
+* Kim Toppari (FIN) — License 121212
+* Claudia Hill (GBR) — License 3349
+* Tudor BAJENARU (ROU) — License 292
+* Pop Victor-Alex (ROU) — License 37
+
+### 2.4 Missing Information
+No license number provided and no name match:
+
+* Jaume Prats (ESP)
+* Antolin Javier Valdes (ESP)
+* Kévin Faur (FRA)
+* Piers-Rex Murray (GBR)
+* Joris Vainius (LTU)

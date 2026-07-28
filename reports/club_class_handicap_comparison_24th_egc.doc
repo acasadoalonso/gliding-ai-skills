@@ -1,0 +1,325 @@
+<html><head><meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 8px; text-align: left; } th { background-color: #f2f2f2; }</style></head><body>
+<h1>Club Class Handicap Comparison Report</h1>
+<p><strong>Competition:</strong> 24th FAI EGC</p>
+<p><strong>Date of Report:</strong> 2026-07-13</p>
+<br>
+<p>This report compares the IGC base handicaps (from `club_class_handicaps.md`) with the handicaps assigned for the 24th FAI EGC competition.</p>
+<br>
+<table>
+  <tr>
+    <th>CN</th>
+    <th>Name</th>
+    <th>Model</th>
+    <th>Ref Weight</th>
+    <th>IGC Base</th>
+    <th>Assigned</th>
+    <th>Diff</th>
+  </tr>
+  <tr>
+    <td>FC</td>
+    <td>Pascal Zollikofer</td>
+    <td>LS4</td>
+    <td>351,4kg</td>
+    <td>1.030</td>
+    <td>1.03</td>
+    <td>0.000</td>
+  </tr>
+  <tr>
+    <td>PP</td>
+    <td>Mikołaj Zdun</td>
+    <td>LS3 WL</td>
+    <td>384,4kg</td>
+    <td>1.062</td>
+    <td>1.07</td>
+    <td>+0.008</td>
+  </tr>
+  <tr>
+    <td>HR3</td>
+    <td>Dani Zaninovic</td>
+    <td>ASW 24 WL</td>
+    <td>380,4kg</td>
+    <td>1.060</td>
+    <td>1.072</td>
+    <td>+0.012</td>
+  </tr>
+  <tr>
+    <td>B8</td>
+    <td>Olena Yakymchuk</td>
+    <td>Discus CS</td>
+    <td>346,0kg</td>
+    <td>1.054</td>
+    <td>1.048</td>
+    <td>-0.006</td>
+  </tr>
+  <tr>
+    <td>PX</td>
+    <td>Michiel Van den Borne</td>
+    <td>Discus b WL</td>
+    <td>342,8kg</td>
+    <td>1.054</td>
+    <td>1.052</td>
+    <td>-0.002</td>
+  </tr>
+  <tr>
+    <td>56</td>
+    <td>Antolin Javier Valdes</td>
+    <td>LS3</td>
+    <td>372,8kg</td>
+    <td>1.062</td>
+    <td>1.062</td>
+    <td>0.000</td>
+  </tr>
+  <tr>
+    <td>KT</td>
+    <td>Kim Toppari</td>
+    <td>LS7 neo WL</td>
+    <td>341,2kg</td>
+    <td>1.036</td>
+    <td>1.037</td>
+    <td>+0.001</td>
+  </tr>
+  <tr>
+    <td>CX</td>
+    <td>Jaroslav Tomana</td>
+    <td>ASW 20</td>
+    <td>361,4kg</td>
+    <td>1.074</td>
+    <td>1.071</td>
+    <td>-0.003</td>
+  </tr>
+  <tr>
+    <td>XW</td>
+    <td>Ferenc Tamás</td>
+    <td>LS3 WL</td>
+    <td>387,8kg</td>
+    <td>1.062</td>
+    <td>1.074</td>
+    <td>+0.012</td>
+  </tr>
+  <tr>
+    <td>WE</td>
+    <td>Francis Svobodny</td>
+    <td>ASW 20</td>
+    <td>365,0kg</td>
+    <td>1.074</td>
+    <td>1.074</td>
+    <td>0.000</td>
+  </tr>
+  <tr>
+    <td>CK</td>
+    <td>Šimon Šiška</td>
+    <td>ASW 24 WL</td>
+    <td>364,0kg</td>
+    <td>1.060</td>
+    <td>1.064</td>
+    <td>+0.004</td>
+  </tr>
+  <tr>
+    <td>ZS</td>
+    <td>Edmund Schuller</td>
+    <td>ASW 24 WL</td>
+    <td>361,6kg</td>
+    <td>1.060</td>
+    <td>1.064</td>
+    <td>+0.004</td>
+  </tr>
+  <tr>
+    <td>HV</td>
+    <td>Sara Salonen</td>
+    <td>LS7 WL</td>
+    <td>322,4kg</td>
+    <td>1.036</td>
+    <td>1.034</td>
+    <td>-0.002</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Gvidas Sabeckis</td>
+    <td>ASW 20</td>
+    <td>353,2kg</td>
+    <td>1.074</td>
+    <td>1.071</td>
+    <td>-0.003</td>
+  </tr>
+  <tr>
+    <td>FLS</td>
+    <td>Tomasz Rubaj</td>
+    <td>LS3 WL</td>
+    <td>386,6kg</td>
+    <td>1.062</td>
+    <td>1.07</td>
+    <td>+0.008</td>
+  </tr>
+  <tr>
+    <td>16</td>
+    <td>Vytautas Rasimavicius</td>
+    <td>LS3 WL</td>
+    <td>381,0kg</td>
+    <td>1.062</td>
+    <td>1.07</td>
+    <td>+0.008</td>
+  </tr>
+  <tr>
+    <td>AL</td>
+    <td>Jaume Prats</td>
+    <td>ASW 20</td>
+    <td>369,6kg</td>
+    <td>1.074</td>
+    <td>1.074</td>
+    <td>0.000</td>
+  </tr>
+  <tr>
+    <td>EEE</td>
+    <td>Benjamin Payne</td>
+    <td>ASW 20 L</td>
+    <td>368,8kg</td>
+    <td>1.074</td>
+    <td>1.074</td>
+    <td>0.000</td>
+  </tr>
+  <tr>
+    <td>CP</td>
+    <td>Dylan Osolian</td>
+    <td>LS3</td>
+    <td>376,0kg</td>
+    <td>1.062</td>
+    <td>1.062</td>
+    <td>0.000</td>
+  </tr>
+  <tr>
+    <td>NX</td>
+    <td>Michael Mix</td>
+    <td>SZD-55</td>
+    <td>358,2kg</td>
+    <td>1.042</td>
+    <td>1.046</td>
+    <td>+0.004</td>
+  </tr>
+  <tr>
+    <td>451</td>
+    <td>Andrii Lohvynchuk</td>
+    <td>Pegase</td>
+    <td>379,0kg</td>
+    <td>1.018</td>
+    <td>1.026</td>
+    <td>+0.008</td>
+  </tr>
+  <tr>
+    <td>NZ</td>
+    <td>Toni Kittler</td>
+    <td>LS7 WL</td>
+    <td>341,4kg</td>
+    <td>1.036</td>
+    <td>1.037</td>
+    <td>+0.001</td>
+  </tr>
+  <tr>
+    <td>CH</td>
+    <td>Claudia Hill</td>
+    <td>LS1-f neo WL</td>
+    <td>344,6kg</td>
+    <td>1.006</td>
+    <td>1.01</td>
+    <td>+0.004</td>
+  </tr>
+  <tr>
+    <td>A3</td>
+    <td>Ivan Harašta</td>
+    <td>ASW 20</td>
+    <td>368,2kg</td>
+    <td>1.074</td>
+    <td>1.074</td>
+    <td>0.000</td>
+  </tr>
+  <tr>
+    <td>AD</td>
+    <td>György Gulyás</td>
+    <td>ASW 20</td>
+    <td>372,8kg</td>
+    <td>1.074</td>
+    <td>1.078</td>
+    <td>+0.004</td>
+  </tr>
+  <tr>
+    <td>MN</td>
+    <td>Simon Gantner</td>
+    <td>LS4-a</td>
+    <td>365,6kg</td>
+    <td>1.030</td>
+    <td>1.034</td>
+    <td>+0.004</td>
+  </tr>
+  <tr>
+    <td>3C</td>
+    <td>Frane Franic</td>
+    <td>Pegase</td>
+    <td>379,0kg</td>
+    <td>1.018</td>
+    <td>1.026</td>
+    <td>+0.008</td>
+  </tr>
+  <tr>
+    <td>1X</td>
+    <td>Robin Förster</td>
+    <td>LS7 WL</td>
+    <td>342,4kg</td>
+    <td>1.036</td>
+    <td>1.037</td>
+    <td>+0.001</td>
+  </tr>
+  <tr>
+    <td>SN</td>
+    <td>Alexandre Fierrain</td>
+    <td>LS3-a WL</td>
+    <td>383,0kg</td>
+    <td>1.062</td>
+    <td>1.07</td>
+    <td>+0.008</td>
+  </tr>
+  <tr>
+    <td>LK</td>
+    <td>Roelof Corporaal</td>
+    <td>LS7 neo WL</td>
+    <td>340,4kg</td>
+    <td>1.036</td>
+    <td>1.037</td>
+    <td>+0.001</td>
+  </tr>
+  <tr>
+    <td>OO</td>
+    <td>Tano Cavattoni</td>
+    <td>LS3-a</td>
+    <td>341,6kg</td>
+    <td>1.062</td>
+    <td>1.056</td>
+    <td>-0.006</td>
+  </tr>
+  <tr>
+    <td>YC</td>
+    <td>Filip Bojanowski</td>
+    <td>LS7 neo WL</td>
+    <td>350,8kg</td>
+    <td>1.036</td>
+    <td>1.04</td>
+    <td>+0.004</td>
+  </tr>
+  <tr>
+    <td>MX</td>
+    <td>Alessandro Bassalti</td>
+    <td>DG-300 WL</td>
+    <td>367,8kg</td>
+    <td>1.018</td>
+    <td>1.022</td>
+    <td>+0.004</td>
+  </tr>
+  <tr>
+    <td>Y3</td>
+    <td>Tudor Bajenaru</td>
+    <td>LS4-a neo WL</td>
+    <td>373,6kg</td>
+    <td>1.030</td>
+    <td>1.042</td>
+    <td>+0.012</td>
+  </tr>
+</table>
+</body></html>

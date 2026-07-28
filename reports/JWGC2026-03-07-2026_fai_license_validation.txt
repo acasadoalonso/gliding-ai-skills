@@ -1,0 +1,118 @@
+# JWGC 2026 FAI License Validation Report
+
+**Date of Validation:** 2026-07-03
+**Source Data:** JWGC2026-03-07-2026.xlsx
+**Total Pilots Processed:** 81
+
+---
+
+## 1. Executive Summary
+
+| Status | Count | Description |
+| :--- | :--- | :--- |
+| **VALID** | 54 | Licence number matched an active FAI record. |
+| **FOUND BY NAME** | 16 | Number wrong/missing, pilot found via name match. |
+| **INVALID** | 5 | Provided number not found in the national records. |
+| **NO LICENSE PROVIDED** | 6 | No number listed and no name match found. |
+| **TOTAL** | **81** | |
+
+---
+
+## 2. Detailed Findings
+
+### 2.1 Validated Licenses
+The following pilots have verified, active FAI sporting licenses:
+
+* Amber Davison (AUS) - License: 181945, valid until 2026-09-30
+* Edwige Colson (BEL) - License: 163493, valid until 2027-03-31
+* Michiel Haemels (BEL) - License: 184760, valid until 2027-03-31
+* Wannes Smits (BEL) - License: 184759, valid until 2027-03-31
+* Tiago Marchese Raupp (BRA) - License: 183835, valid until 2027-02-28
+* Iago Manzi Novais (BRA) - License: 183836, valid until 2027-02-28
+* Michaela Křížová (CZE) - License: 158464, valid until 2026-12-31
+* Petr Mašík (CZE) - License: 183692, valid until 2026-12-31
+* Michaela Rendlová (CZE) - License: 161972, valid until 2026-12-31
+* Jan Šťastný (CZE) - License: 167612, valid until 2026-12-31
+* Lasse Edslev (DEN) - License: 123839, valid until 2027-05-05
+* Oliver Kirial Olsen (DEN) - License: 160606, valid until 2027-03-05
+* Skarby-Reif Sofus (DEN) - License: 174827, valid until 2027-03-25
+* Nicolas Caudrelier (FRA) - License: 169780, valid until 2026-12-31
+* Elliot Daniel (FRA) - License: 173973, valid until 2026-12-31
+* Clément De Pechy (FRA) - License: 162032, valid until 2026-12-31
+* Théo Napoléon (FRA) - License: 164635, valid until 2026-12-31
+* Gael Pischedda (FRA) - License: 167441, valid until 2026-12-31
+* François-Xavier Poisson (FRA) - License: 175323, valid until 2026-12-31
+* Oscar Butlin (GBR) - License: 167373, valid until 2026-12-31
+* Oliver Ramsay (GBR) - License: 172297, valid until 2026-12-31
+* Sebastien Van Der Stichele (GBR) - License: 168640, valid until 2026-12-31
+* Nuno Ferreira (GER) - License: 166731, valid until 2026-12-31
+* Jens Kammerer (GER) - License: 178381, valid until 2026-12-31
+* Florian Kraja (GER) - License: 172926, valid until 2026-12-31
+* Felix Kries (GER) - License: 178695, valid until 2026-12-31
+* Max Maslak (GER) - License: 162799, valid until 2026-12-31
+* Nils Zitzelsberger (GER) - License: 174696, valid until 2026-12-31
+* Bálint Fekete (HUN) - License: 175540, valid until 2026-12-31
+* Barna Hadi (HUN) - License: 175537, valid until 2026-12-31
+* Alexander Lustyik (HUN) - License: 175539, valid until 2026-12-31
+* Mónika Sára Szabó (HUN) - License: 166904, valid until 2026-12-31
+* Roland Veronyák (HUN) - License: 174891, valid until 2026-12-31
+* Jovaiša Titas (LTU) - License: 160095, valid until 2026-12-31
+* Wouter Bakker (NED) - License: 162318, valid until 2026-12-31
+* Robin Geraets (NED) - License: 159478, valid until 2026-12-31
+* Jasper Jansen (NED) - License: 160523, valid until 2026-12-31
+* Kaaij Noud (NED) - License: 183056, valid until 2026-12-31
+* Niels van Nieuwland (NED) - License: 126700, valid until 2026-12-31
+* Thomasz Kurowski (POL) - License: 12436, valid until 2026-12-31
+* Radoslaw Nogal (POL) - License: 170094, valid until 2026-12-31
+* Julia Walowska (POL) - License: 164190, valid until 2026-12-31
+* Jan Wojewoda (POL) - License: 140752, valid until 2026-12-31
+* Antoni Zawirski (POL) - License: 140868, valid until 2026-12-31
+* Nick Bachmann (SUI) - License: 167084, valid until 2027-03-31
+* Jonas Busch (SUI) - License: 180044, valid until 2027-03-31
+* Stefan Gertsch (SUI) - License: 170057, valid until 2027-03-31
+* Raphael Lutz (SUI) - License: 158477, valid until 2027-03-31
+* Bryan Uhlmann (SUI) - License: 174670, valid until 2027-03-31
+* Antonio Rudolf Kalik (SVK) - License: 179556, valid until 2026-12-31
+* Adam Sabla (SVK) - License: 184749, valid until 2026-12-31
+* Michaela Šoltysová (SVK) - License: 180416, valid until 2026-12-31
+* Gabriel Gradin (SWE) - License: 169584, valid until 2027-12-31
+* Elias Severholt Fourati (SWE) - License: 159997, valid until 2027-02-02
+
+### 2.2 Corrected via Name Match
+Number was non-standard, incorrect, or absent; pilot identified by name:
+
+* Max Scutchings (AUS): License: 183474 (no number on entry)
+* Virginie Valck (BEL): License: 184761 (no number on entry)
+* Tomáš Hynek (CZE): Provided `166714` -> Correct: `167614`
+* Lukáš Kříž (CZE): Provided `162168` -> Correct: `162861`
+* Jakob Wollrath Hansen (DEN): Provided `165972` -> Correct: `167952`
+* Jacob Bøgelund Lassen (DEN): License: 181592 (no number on entry)
+* Tom Chapman (GBR): License: 160479 (no number on entry)
+* Patrick Benoist (GER): Provided `162825` -> Correct: `162815`
+* Nikolai Pontoppidan (NOR): Provided `169776` -> Correct: `179776`
+* Henry Richard Daly (RSA): License: 178368 (no number on entry)
+* Matic Kramberger (SLO): License: 129205 (no number on entry)
+* Filip Teo Vidovič (SLO): License: 131611 (no number on entry)
+* Leon Blum (SUI): License: 180693 (no number on entry)
+* Tyler Byron (USA): License: 185764 (no number on entry)
+* Patrick Cernuto (USA): License: 185037 (no number on entry)
+* Michael Hayter (USA): License: 185715 (no number on entry)
+
+### 2.3 Invalid/Unverifiable Licenses
+Provided license numbers that could not be found in national FAI records:
+
+* Valentin Pastoriza (ARG) — License 158408
+* Jesse Mathlin (FIN) — License 183066
+* Rostyslav Redchuk (FIN) — License 178440
+* Juuso Sipilä (FIN) — License 169546
+* Kim Toppari (FIN) — License 121212
+
+### 2.4 Missing Information
+No license number provided and no name match:
+
+* Philip Heinrich (AUT)
+* Martta Kangasniemi (FIN)
+* Lukas Vink (NED)
+* Philip Jonkers (RSA)
+* Christiaan Jonkers (RSA)
+* Michael Tiffin (RSA)

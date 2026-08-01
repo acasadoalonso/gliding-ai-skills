@@ -2457,6 +2457,11 @@ git commit -m "test(igc): pin the --json output contract"
 Skipped when the corpus is absent, so the suite stays portable. Its job is to
 catch a rule that starts firing far more or far less often after a refactor -
 the failure mode that would quietly ruin the report.
+
+Only the four calibrated contest directories are scanned, not the whole of
+IGCfiles/. The tree root also holds a handful of loose one-off downloads that
+were never part of the calibration in the spec, and including them would make
+every documented hit count approximate instead of exact.
 """
 
 import json
@@ -2471,15 +2476,25 @@ sys.path.insert(0, str(HERE.parent))
 from validate_igc_files import scan
 
 CORPUS = Path("/home/angel/IGCfiles")
+CALIBRATION_DIRS = ("egc2026_2026-07-13", "egc2026_2026-07-10",
+                    "WGC2026", "sgp2026")
 BASELINE = HERE / "corpus_baseline.json"
 
 pytestmark = pytest.mark.skipif(
-    not CORPUS.is_dir(), reason="calibration corpus not present")
+    not all((CORPUS / d).is_dir() for d in CALIBRATION_DIRS),
+    reason="calibration corpus not present")
+
+
+def scan_calibration():
+    results = []
+    for d in CALIBRATION_DIRS:
+        results.extend(scan(CORPUS / d))
+    return results
 
 
 @pytest.fixture(scope="module")
 def actual():
-    results = scan(CORPUS)
+    results = scan_calibration()
     counts = {}
     for r in results:
         for f in r["findings"]:
@@ -2536,9 +2551,9 @@ cd /home/angel/gliding-ai-skills/skills/validate-igc-files/scripts
 python3 -c "
 import json, sys
 from pathlib import Path
-sys.path.insert(0, '.')
-from validate_igc_files import scan
-results = scan(Path('/home/angel/IGCfiles'))
+sys.path.insert(0, '.'); sys.path.insert(0, 'tests')
+from test_corpus import scan_calibration
+results = scan_calibration()
 counts = {}
 for r in results:
     for f in r['findings']:
@@ -2722,9 +2737,13 @@ Expected: the documented invocation path works and prints the two-tier report.
 ```bash
 cd /home/angel/gliding-ai-skills
 python3 -m pytest skills/validate-igc-files/scripts/tests/ -q
-python3 skills/validate-igc-files/scripts/validate_igc_files.py /home/angel/IGCfiles | tail -3
+python3 skills/validate-igc-files/scripts/validate_igc_files.py \
+  /home/angel/IGCfiles/egc2026_2026-07-10 | tail -3
 ```
-Expected: all tests pass; the summary reads `273 conform, 35 do not`.
+Expected: all tests pass; the second command completes without a traceback.
+Whole-corpus conformance (273 of 308) is asserted by `test_corpus.py`, which
+scans the four calibrated directories rather than the IGCfiles/ root — the root
+also contains loose one-off downloads that were not part of the calibration.
 
 - [ ] **Step 7: Commit**
 
@@ -2739,7 +2758,7 @@ git commit -m "docs(igc): document two-tier validation, new flags and GPS anomal
 ## Success Criteria
 
 1. `python3 -m pytest skills/validate-igc-files/scripts/tests/` passes, with a fixture for every registered rule.
-2. `validate_igc_files.py /home/angel/IGCfiles` reports 273 conform / 35 non-conform.
+2. Across the four calibrated corpus directories (308 files), 273 conform and 35 do not — asserted by `test_corpus.py`.
 3. Every failing file fails on a structural rule — none fails solely on non-ASCII characters or empty lines.
 4. `--json` output matches the contract in `test_json_output.py`.
 5. `python3 ~/.claude/skills/validate-igc-files/scripts/validate_igc_files.py <dir>` works unchanged.

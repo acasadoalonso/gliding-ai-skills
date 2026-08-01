@@ -23,6 +23,12 @@ All severity decisions in this design were calibrated by running each candidate
 rule against the 308 real IGC files under `IGCfiles/` (EGC 2026 days of 10 and 13
 July, WGC 2026, SGP 2026). Manufacturers present: LXV 245, NAV 57, FLA 3, LXN 3.
 
+> **The figures in this section are the original exploratory probes.** Six were
+> later found to be wrong once the rules were implemented properly; the
+> authoritative counts are in the rule catalogue below, and the errors are
+> explained under *Corrections after implementation*. The severity decisions the
+> probes drove all still hold — the corrections shift magnitudes, not tiers.
+
 Rules that fire on most valid files:
 
 | Candidate rule | Files hit |
@@ -77,18 +83,27 @@ recorder exceeds it.
    integrity or scoring validity is in question.
 4. **Structured findings with `--json`.** Report generation stops parsing prose.
 5. **Per-rule fixtures plus a corpus regression test.**
+6. **`C_ZERO_DECL_TIME` added 2026-08-01**, closing a gap against §8 of the rules
+   document: *"Declaration time must be non-zero/decodable — a zero/unknown time
+   is an error."* It was named during design but omitted from the first draft of
+   this catalogue.
 
 ## Architecture
 
 ```
 scripts/
   igc_model.py            parse + decode           ~150 lines
-  igc_rules.py            52 rules + registry      ~550 lines
+  igc_rules.py            54 rules + registry      ~640 lines
+  igc_observations.py     ENL + GPS anomaly        ~120 lines
   validate_igc_files.py   CLI + reporting          ~210 lines   (entry point unchanged)
   tests/
-    fixtures/valid_baseline.igc
-    fixtures/<rule_id>.igc
+    build_fixtures.py     generates the baseline plus one mutation per rule
+    fixtures/*.igc        generated, committed so failures stay inspectable
+    test_model.py
     test_rules.py
+    test_observations.py
+    test_cli.py
+    test_json_output.py
     test_corpus.py
 ```
 
@@ -127,16 +142,24 @@ Dependencies: Python standard library only, as today.
 
 ## Rule catalogue
 
-52 rules: 29 ERROR, 23 WARNING. Hit counts are against the 308-file corpus,
-measured 2026-08-01.
+**As implemented: 54 rules — 30 ERROR, 24 WARNING.** Hit counts below are the
+measured values from `scripts/tests/corpus_baseline.json`, generated against the
+308-file corpus on 2026-08-01.
+
+The catalogue originally listed 52 rules with counts taken from exploratory
+probes. Implementation and verification changed six of those figures. Each is
+annotated *(was N)* below, and the discrepancies are explained in
+**Corrections after implementation** at the end of this section. In every case
+the probe was wrong, not the rule.
 
 ### ERROR
 
 | Rule id | Check | Hits |
 |---|---|---:|
-| `H_MISSING_MANDATORY` | Missing any of `DTE PLT CM2 GTY GID DTM RFW RHW FTY GPS PRS FRS` | 36 |
+| `H_MISSING_MANDATORY` | Missing any of `DTE PLT CM2 GTY GID DTM RFW RHW FTY GPS PRS FRS` | 22 *(was 36)* |
 | `I_MISSING_EXT` | I-record lacks mandatory `FXA` / `ENL` / `SIU` | 29 |
-| `H_DTM_NOT_WGS84` | `HFDTM` datum is not WGS84 | 14 |
+| `H_DTM_NOT_WGS84` | Datum is neither named WGS84 nor coded 100 | 0 *(was 14)* |
+| `C_ZERO_DECL_TIME` | Declaration time is zero or undecodable | 0 |
 | `ENL_MOP_ALL_ZERO` | ENL or MOP zero throughout — dead sensor | 12 |
 | `C_FLIGHTDATE_MISMATCH` | C-record embedded flight date ≠ `HFDTE` | 4 |
 | `I_PTR_CHAIN` | First start pointer ≠ 36, or gap / overlap / start > end | 3 |
@@ -179,13 +202,14 @@ present.
 |---|---|---:|---|
 | `F_INTERVAL_LONG` | F-record interval > 5 min | 262 | 85% of real recorders |
 | `H_FTY_NOT_IGC` | `HFFTY` does not end in `IGC` | 250 | Document calls it a comment |
-| `ENL_MOP_MIN_LOW` | ENL/MOP minimum below 10 | 250 | Normal for a glider at rest |
-| `A_SHORT_SERIAL` | 3-character legacy serial ID | 245 | LXNav standard format |
-| `A_BAD_SEPARATOR` | `_` instead of `-` before the comment | 245 | LXNav standard format |
+| `ENL_MOP_MIN_LOW` | ENL/MOP minimum above 0 but below 10 | 239 *(was 250)* | Normal for a glider at rest |
+| `A_SHORT_SERIAL` | 3-character legacy or otherwise malformed serial ID | 256 *(was 245)* | LXNav standard format |
+| `A_BAD_SEPARATOR` | `_` instead of `-` before the comment | 224 *(was 245)* | LXNav standard format |
 | `CHAR_NON_ASCII` | Non-ASCII character | 65 | Reclassified; benign for scoring |
 | `B_GAPS` | Gap larger than nominal fix interval + 1 s | 114 | Logger mode changes |
-| `TIME_DUPLICATE` | Consecutive identical timestamps | 93 | Sub-second and fast-fix logging |
-| `B_V_FLAG_NONZERO_ALT` | GNSS altitude ≠ 0 while fix validity is `V` | 44 | Invalid fixes are excluded from scoring anyway |
+| `TIME_DUPLICATE` | Consecutive identical timestamps on valid fixes | 92 *(was 93)* | Sub-second and fast-fix logging |
+| `H_DTM_CODE_ONLY` | Datum coded 100 (WGS84) but text does not say WGS84 | 14 | Correct datum, non-standard text |
+| `B_V_FLAG_NONZERO_ALT` | GNSS altitude ≠ 0 while fix validity is `V` | 0 *(was 44)* | Invalid fixes are excluded from scoring anyway |
 | `CHAR_EMPTY_LINE` | Empty line inside the file | 9 | Reclassified; post-flight software artefact |
 | `L_BAD_PREFIX` | L-record manufacturer prefix unrecognised | 25 | `XCM`, `MCU` unregistered but harmless |
 | `H_DTE_NO_LITERAL` | `HFDTE` missing the literal `DATE:` | 17 | Legacy header format |
@@ -193,7 +217,7 @@ present.
 | `H_FTY_MULTI_COMMA` | `HFFTY` has more than one comma | 2 | Document says "only noted" |
 | `TLC_UNKNOWN_I` / `_J` / `_M` | Unrecognised three-letter code | few | |
 | `E_UNKNOWN_CODE` | Unrecognised event code | 0 | |
-| `E_PEV_NO_FAST_FIX` | Fewer than 30 fixes in the 30 s after a PEV | 0 | |
+| `E_PEV_NO_FAST_FIX` | The 30 fixes after a PEV span more than 30 s | 11 *(was 0)* | |
 | `H_NONCONTIGUOUS` | H-record block interrupted and resumed | 0 | |
 | `WILDCARD_META` | `?` in an A, D, E, F, H, I, J or M record | 0 | |
 | `CHAR_DISALLOWED` | `$ * ! \ ^ ~` before the last G record | 0 | |
@@ -203,9 +227,10 @@ present.
 tool, to avoid flooding a single file's block.
 
 `B_V_FLAG_NONZERO_ALT` departs from the reference document, which classifies it as
-an error (Spec A4.1.3). Reviewed and confirmed as a WARNING on 2026-08-01: it
-affects 44 files, and a fix flagged `V` is invalid and therefore excluded from
-scoring regardless of what altitude the recorder wrote alongside it.
+an error (Spec A4.1.3). Reviewed and confirmed as a WARNING on 2026-08-01: a fix
+flagged `V` is invalid and therefore excluded from scoring regardless of what
+altitude the recorder wrote alongside it. It turns out to fire on no file in the
+corpus at all — see *Corrections after implementation*.
 
 ### Observations
 
@@ -229,6 +254,26 @@ scoring regardless of what altitude the recorder wrote alongside it.
 - **Informational echoes** — maximum FXA value seen, decoded declaration
   coordinates, and similar "display for review" output from the reference tool.
   They belong to an interactive analyser, not a batch conformance scan.
+
+### Corrections after implementation
+
+Verifying the corpus snapshot against this catalogue on 2026-08-01 surfaced eight
+discrepancies. Every one was a fault in the exploratory probe or in this
+document, not in the implemented rule.
+
+| Item | Was | Is | Cause |
+|---|---:|---:|---|
+| Overall conformance | 273 / 35 | **261 / 47** | The probe that produced 35 unioned only the header, I-record and G-record errors. It silently omitted `ENL_MOP_ALL_ZERO` (12 files) and the C-record checks (4), though both appear in this catalogue with those counts. The per-rule figures were right; the roll-up was not. |
+| `B_V_FLAG_NONZERO_ALT` | 44 | **0** | The probe read `b[25:30]`, the **pressure** altitude. The rule reads GNSS altitude (columns 31–35), which is what Spec A4.1.3 governs. 44 files do carry a non-zero *pressure* altitude on invalid fixes — correct behaviour, since a barometer does not depend on satellites. No file has a bad GNSS altitude. |
+| `H_DTM_NOT_WGS84` | 14 | **0** | All 14 files read `HFDTM100GPSDATUM:WGS-1984`. Datum code 100 *is* WGS84, so these declare the correct datum. §3 of the rules document says code 100 without the literal text is "only a comment". Split into `H_DTM_NOT_WGS84` (error, genuinely wrong datum) and `H_DTM_CODE_ONLY` (warning, 14 files). |
+| `A_SHORT_SERIAL` | 245 | **256** | The probe split the A-record tail on `-` and `:` but not `_`, so it read `ALXVB0V_FLIGHT:1` as having a 10-character serial. Correct parsing finds 232 three-character serials plus 24 of other malformed lengths. |
+| `A_BAD_SEPARATOR` | 245 | **224** | 245 was the LXV *manufacturer* count, assumed to equal the underscore count. Only 224 files actually contain `_`. |
+| `ENL_MOP_MIN_LOW` | 250 | **239** | The rule requires `min > 0` so it does not double-report the 11 files `ENL_MOP_ALL_ZERO` already flags as dead sensors. |
+| `TIME_DUPLICATE` | 93 | **92** | The rule requires both fixes to carry the `A` validity flag; the probe did not. |
+| `E_PEV_NO_FAST_FIX` | 0 | **11** | Never actually measured — the probe did not test PEV fast-fixing, and 0 was an assumption. Also reimplemented: counting fixes inside a 30 s window reported clean 1 Hz loggers as one fix short, so it now checks that the next 30 fixes span at most 30 s, as the document states. |
+
+`H_MISSING_MANDATORY` at 22 is consistent with the 22-to-36 range this document
+predicted, since `HFCM2` and `HFFRS` absences overlap almost entirely.
 
 ### Thresholds
 
@@ -265,7 +310,7 @@ ENL  club/67D_56.igc: max ENL 999, 21 run(s), longest 15:59:59-16:01:49 UTC (110
 GPS anomaly (groundspeed > 300 kt) in 2 file(s):
 GPS  standard/67D_I.igc: 9 events — CLUSTER, possible jamming/spoofing; max 1240 kt at 14:02:11 UTC
 
-Scanned 308 IGC file(s) under IGCfiles: 273 conform, 35 do not.
+Scanned 308 IGC file(s) under IGCfiles: 261 conform, 47 do not.
 ```
 
 ### Flags
@@ -288,7 +333,7 @@ never change it.
   "scanned": 308,
   "conform": 273,
   "non_conform": 35,
-  "warning_tally": { "F_INTERVAL_LONG": 262, "A_SHORT_SERIAL": 245 },
+  "warning_tally": { "F_INTERVAL_LONG": 262, "A_SHORT_SERIAL": 256 },
   "files": [
     {
       "path": "club/67D_AD.igc",
@@ -352,7 +397,7 @@ Run with `pytest scripts/tests/`.
 ## Success criteria
 
 1. `pytest scripts/tests/` passes, with a fixture for every registered rule.
-2. `validate_igc_files.py IGCfiles/` reports 273 conform / 35 non-conform.
+2. Across the four calibrated corpus directories (308 files), 261 conform and 47 do not — asserted by `test_corpus.py`.
 3. Every failing file's errors are structural — no file fails solely on
    non-ASCII characters or empty lines.
 4. `--json` output validates against the shape above and round-trips into the

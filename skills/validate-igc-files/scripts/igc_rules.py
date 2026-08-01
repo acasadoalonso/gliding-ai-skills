@@ -156,3 +156,221 @@ def r_char_disallowed(doc):
 def _a(rule_id, severity, category):
     """Tiny helper so each rule states its identity exactly once."""
     return (rule_id, severity, category)
+
+
+# --------------------------------------------------------------------------
+# A record  (section 2)
+# --------------------------------------------------------------------------
+
+def _a_serial(a_record):
+    """Return the serial field: everything after the 3-letter manufacturer
+    code, up to the comment separator if there is one."""
+    tail = a_record[4:]
+    for sep in ("-", "_", ":", " "):
+        if sep in tail:
+            tail = tail.split(sep, 1)[0]
+    return tail
+
+
+@rule("A_RECORD_POSITION", ERROR, "a-record")
+def r_a_record_position(doc):
+    a_lines = doc.of_type("A")
+    if not a_lines:
+        return [Finding("A_RECORD_POSITION", ERROR, "a-record",
+                        "no A (manufacturer/serial) record", None, {"count": 0})]
+    if len(a_lines) > 1:
+        return [Finding("A_RECORD_POSITION", ERROR, "a-record",
+                        f"{len(a_lines)} A records; exactly one is allowed",
+                        a_lines[1][0], {"count": len(a_lines)})]
+    n, line = a_lines[0]
+    if n != 1:
+        return [Finding("A_RECORD_POSITION", ERROR, "a-record",
+                        f"A record is at line {n}, it must be the first record",
+                        n, {})]
+    if len(line) < 7:
+        return [Finding("A_RECORD_POSITION", ERROR, "a-record",
+                        f"A record too short for a 3-char manufacturer plus "
+                        f"serial: {line!r}", n, {})]
+    return []
+
+
+@rule("A_NOT_FAI_APPROVED", ERROR, "a-record")
+def r_a_not_fai_approved(doc):
+    if doc.a_record and doc.a_record[1:4].startswith("X"):
+        return [Finding("A_NOT_FAI_APPROVED", ERROR, "a-record",
+                        f"manufacturer code {doc.a_record[1:4]!r} starts with X "
+                        "- recorder is not FAI approved", doc.a_line,
+                        {"manufacturer": doc.a_record[1:4]})]
+    return []
+
+
+@rule("A_SHORT_SERIAL", WARNING, "a-record")
+def r_a_short_serial(doc):
+    if not doc.a_record or len(doc.a_record) < 7:
+        return []
+    serial = _a_serial(doc.a_record)
+    if len(serial) == 3:
+        return [Finding("A_SHORT_SERIAL", WARNING, "a-record",
+                        f"3-character legacy serial ID {serial!r}; new recorders "
+                        "should use a 6-character S/ID", doc.a_line,
+                        {"serial": serial})]
+    if len(serial) not in (3, 6):
+        return [Finding("A_SHORT_SERIAL", WARNING, "a-record",
+                        f"badly formed serial ID {serial!r} ({len(serial)} chars; "
+                        "expected 6)", doc.a_line, {"serial": serial})]
+    return []
+
+
+@rule("A_BAD_SEPARATOR", WARNING, "a-record")
+def r_a_bad_separator(doc):
+    if not doc.a_record:
+        return []
+    tail = doc.a_record[4:]
+    if "_" in tail:
+        return [Finding("A_BAD_SEPARATOR", WARNING, "a-record",
+                        "A record uses '_' before the comment field; the spec "
+                        "requires '-'", doc.a_line, {})]
+    return []
+
+
+# --------------------------------------------------------------------------
+# H records  (section 3)
+# --------------------------------------------------------------------------
+
+MANDATORY_H = {
+    "DTE": "flight date", "PLT": "pilot in charge", "CM2": "crew 2",
+    "GTY": "glider type", "GID": "glider ID", "DTM": "GNSS datum",
+    "RFW": "firmware version", "RHW": "hardware version",
+    "FTY": "FR type", "GPS": "GNSS receiver",
+    "PRS": "pressure sensor", "FRS": "security status",
+}
+
+OPTIONAL_H = {"ATS", "BEI", "CCL", "CID", "CLB", "DB1", "DB2", "GAL",
+              "GLO", "MOP", "OOI", "SIU", "TZN", "FXA"}
+
+
+@rule("H_NONE", ERROR, "h-record")
+def r_h_none(doc):
+    if not doc.of_type("H"):
+        return [Finding("H_NONE", ERROR, "h-record",
+                        "no H (header) records at all", None, {})]
+    return []
+
+
+@rule("H_MISSING_MANDATORY", ERROR, "h-record")
+def r_h_missing_mandatory(doc):
+    if not doc.of_type("H"):
+        return []            # H_NONE already reports this
+    missing = [f"{t} ({d})" for t, d in MANDATORY_H.items()
+               if t not in doc.headers]
+    if missing:
+        return [Finding("H_MISSING_MANDATORY", ERROR, "h-record",
+                        "missing mandatory H record(s): " + ", ".join(missing),
+                        None, {"missing": [m.split(" ")[0] for m in missing]})]
+    return []
+
+
+@rule("H_NONCONTIGUOUS", WARNING, "h-record")
+def r_h_noncontiguous(doc):
+    nums = [n for n, _ in doc.of_type("H")]
+    if nums and nums[-1] - nums[0] + 1 != len(nums):
+        return [Finding("H_NONCONTIGUOUS", WARNING, "h-record",
+                        f"H records are not contiguous (span lines "
+                        f"{nums[0]}-{nums[-1]} but only {len(nums)} of them)",
+                        nums[0], {})]
+    return []
+
+
+@rule("H_DUPLICATE_SUBTYPE", WARNING, "h-record")
+def r_h_duplicate_subtype(doc):
+    seen, dupes = set(), []
+    for n, line in doc.of_type("H"):
+        if len(line) < 5:
+            continue
+        tlc = line[2:5]
+        if tlc in seen:
+            dupes.append((n, tlc))
+        seen.add(tlc)
+    return summarize(*_a("H_DUPLICATE_SUBTYPE", WARNING, "h-record"), dupes,
+                     "{n} duplicate H record subtype(s), first {detail} at "
+                     "line {line}")
+
+
+@rule("H_DTE_INVALID", ERROR, "h-record")
+def r_h_dte_invalid(doc):
+    entry = doc.headers.get("DTE")
+    if not entry:
+        return []            # H_MISSING_MANDATORY reports absence
+    n, _ = entry
+    d = doc.flight_date
+    if not d:
+        return [Finding("H_DTE_INVALID", ERROR, "h-record",
+                        "HFDTE contains no 6-digit date", n, {})]
+    day, month = int(d[0:2]), int(d[2:4])
+    if not (1 <= day <= 31 and 1 <= month <= 12):
+        return [Finding("H_DTE_INVALID", ERROR, "h-record",
+                        f"HFDTE date {d!r} is not a valid DDMMYY date", n,
+                        {"date": d})]
+    return []
+
+
+@rule("H_DTE_NO_LITERAL", WARNING, "h-record")
+def r_h_dte_no_literal(doc):
+    entry = doc.headers.get("DTE")
+    if entry and "DATE:" not in entry[1]:
+        return [Finding("H_DTE_NO_LITERAL", WARNING, "h-record",
+                        "HFDTE is missing the literal 'DATE:'", entry[0], {})]
+    return []
+
+
+@rule("H_DTM_NOT_WGS84", ERROR, "h-record")
+def r_h_dtm_not_wgs84(doc):
+    entry = doc.headers.get("DTM")
+    if entry and "WGS84" not in entry[1].upper():
+        return [Finding("H_DTM_NOT_WGS84", ERROR, "h-record",
+                        f"incorrect geodetic datum: {entry[1]!r} (WGS84 required)",
+                        entry[0], {})]
+    return []
+
+
+def _fty_value(doc):
+    entry = doc.headers.get("FTY")
+    if not entry:
+        return None, None
+    n, line = entry
+    return n, line[5:].split(":", 1)[-1]
+
+
+@rule("H_FTY_NO_COMMA", ERROR, "h-record")
+def r_h_fty_no_comma(doc):
+    n, value = _fty_value(doc)
+    if value is None:
+        return []
+    if value.count(",") == 0:
+        return [Finding("H_FTY_NO_COMMA", ERROR, "h-record",
+                        "HFFTY has no comma separating manufacturer from model",
+                        n, {})]
+    if value.strip().startswith(",") or value.strip().endswith(","):
+        return [Finding("H_FTY_NO_COMMA", ERROR, "h-record",
+                        "HFFTY comma is the first or last character of the field",
+                        n, {})]
+    return []
+
+
+@rule("H_FTY_MULTI_COMMA", WARNING, "h-record")
+def r_h_fty_multi_comma(doc):
+    n, value = _fty_value(doc)
+    if value is not None and value.count(",") > 1:
+        return [Finding("H_FTY_MULTI_COMMA", WARNING, "h-record",
+                        f"HFFTY has {value.count(',')} commas; exactly one is "
+                        "expected", n, {"commas": value.count(",")})]
+    return []
+
+
+@rule("H_FTY_NOT_IGC", WARNING, "h-record")
+def r_h_fty_not_igc(doc):
+    entry = doc.headers.get("FTY")
+    if entry and not entry[1].rstrip().endswith("IGC"):
+        return [Finding("H_FTY_NOT_IGC", WARNING, "h-record",
+                        "HFFTY does not end with 'IGC'", entry[0], {})]
+    return []

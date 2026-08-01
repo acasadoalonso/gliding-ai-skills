@@ -110,6 +110,28 @@ MUTATIONS = {
     "CHAR_NON_ASCII": lambda L: L[:14] + ["LNAVPILOT Jose Ramirezé"] + L[14:],
     "CHAR_EMPTY_LINE": lambda L: L[:14] + [""] + L[14:],
     "CHAR_DISALLOWED": lambda L: L[:14] + ["LNAVBAD$VALUE"] + L[14:],
+    # --- Task 3: A record ---
+    "A_RECORD_POSITION": lambda L: L[1:],
+    "A_NOT_FAI_APPROVED": lambda L: ["AXXX240406"] + L[1:],
+    "A_SHORT_SERIAL": lambda L: ["ALXVB0V"] + L[1:],
+    "A_BAD_SEPARATOR": lambda L: ["ANAV240406_FLIGHT:1"] + L[1:],
+    # --- Task 3: H records ---
+    "H_NONE": lambda L: drop(L, lambda l: l.startswith("H")),
+    "H_MISSING_MANDATORY": lambda L: drop(L, lambda l: l.startswith("HFCM2")),
+    "H_NONCONTIGUOUS": lambda L: L[:5] + ["LNAVINTERRUPTION"] + L[5:],
+    "H_DUPLICATE_SUBTYPE": lambda L: L[:6] + ["HFGIDGLIDERID:D-9999"] + L[6:],
+    "H_DTE_INVALID": lambda L: replace(L, lambda l: l.startswith("HFDTE"),
+                                       "HFDTEDATE:993799,01"),
+    "H_DTE_NO_LITERAL": lambda L: replace(L, lambda l: l.startswith("HFDTE"),
+                                          "HFDTE130726"),
+    "H_DTM_NOT_WGS84": lambda L: replace(L, lambda l: l.startswith("HFDTM"),
+                                         "HFDTMGPSDATUM:OSGB36"),
+    "H_FTY_NO_COMMA": lambda L: replace(L, lambda l: l.startswith("HFFTY"),
+                                        "HFFTYFRTYPE:Naviter Oudie N IGC"),
+    "H_FTY_MULTI_COMMA": lambda L: replace(L, lambda l: l.startswith("HFFTY"),
+                                           "HFFTYFRTYPE:Naviter,Oudie,N IGC"),
+    "H_FTY_NOT_IGC": lambda L: replace(L, lambda l: l.startswith("HFFTY"),
+                                       "HFFTYFRTYPE:Naviter,Oudie N"),
 }
 
 

@@ -132,6 +132,26 @@ MUTATIONS = {
                                            "HFFTYFRTYPE:Naviter,Oudie,N IGC"),
     "H_FTY_NOT_IGC": lambda L: replace(L, lambda l: l.startswith("HFFTY"),
                                        "HFFTYFRTYPE:Naviter,Oudie N"),
+    # --- Task 4: I / J / M records ---
+    "I_RECORD_COUNT": lambda L: L[:14] + [I_RECORD] + L[14:],
+    "I_MISSING_EXT": lambda L: [
+        l if l != I_RECORD else "I023638FXA3941ENL" for l in L],
+    "I_LEN_MISMATCH": lambda L: [
+        l if l != I_RECORD else I_RECORD + "XX" for l in L],
+    "I_PTR_CHAIN": lambda L: [
+        l if l != I_RECORD else "I033739FXA4041SIU4244ENL" for l in L],
+    "TLC_UNKNOWN_I": lambda L: [
+        l if l != I_RECORD else "I033638FXA3940SIU4143ZZZ" for l in L],
+    "J_RECORD_COUNT": lambda L: L[:15] + [J_RECORD] + L[15:],
+    "TLC_UNKNOWN_J": lambda L: [
+        l if l != J_RECORD else "J020810QQQ1113WSP" for l in L],
+    "M_RECORD_COUNT": lambda L: L[:15] + ["M010810HRT", "M010810HRT"] + L[15:],
+    "TLC_UNKNOWN_M": lambda L: L[:15] + ["M010810ZZZ"] + L[15:],
+    "ENL_MOP_ALL_ZERO": lambda L: [
+        b(START + i, enl="000") if l.startswith("B") else l
+        for i, l in enumerate(L)],
+    "ENL_MOP_MIN_LOW": lambda L: replace(
+        L, lambda l: l.startswith("B"), b(START, enl="005")),
 }
 
 

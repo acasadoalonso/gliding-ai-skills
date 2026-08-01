@@ -374,3 +374,183 @@ def r_h_fty_not_igc(doc):
         return [Finding("H_FTY_NOT_IGC", WARNING, "h-record",
                         "HFFTY does not end with 'IGC'", entry[0], {})]
     return []
+
+
+# --------------------------------------------------------------------------
+# I, J and M records  (sections 4, 5, 7)
+# --------------------------------------------------------------------------
+
+KNOWN_I_TLC = {"ACX", "ACY", "ACZ", "ANX", "ANY", "ANZ", "AOP", "AOR", "AOA",
+               "ENL", "FXA", "GSP", "LAD", "LOD", "MOP", "NET", "OAT", "RPM",
+               "SIU", "TAS", "TRT", "VAT", "VXA", "CUR", "HDT", "HDM", "EGT",
+               "FFL", "FLE", "VOL", "WDI", "WSP"}
+
+KNOWN_J_TLC = {"AOA", "COT", "CUR", "CU1", "CU2", "DAE", "DAN", "EGT", "FLE",
+               "FFL", "FXA", "GSP", "HDM", "HDT", "HUM", "IAS", "JPT", "LEB",
+               "LE1", "LE2", "MOT", "NET", "MXR", "OAT", "RAI", "REX", "RPM",
+               "TAS", "TDS", "TRT", "VAR", "VOL", "VAT", "VO1", "VO2", "VXA",
+               "WDI", "WSP", "WVE"} | KNOWN_I_TLC
+
+KNOWN_M_TLC = {"HRT", "OXY"}
+
+MANDATORY_I_EXT = ("FXA", "ENL", "SIU")
+ENL_MOP_MIN = 10
+
+
+def _unknown_tlc(exts, known):
+    # 'Xnn' is a documented wildcard form in J records.
+    return [e.tlc for e in exts
+            if e.tlc not in known and not re.fullmatch(r"X..", e.tlc)]
+
+
+@rule("I_RECORD_COUNT", ERROR, "i-record")
+def r_i_record_count(doc):
+    n = len(doc.i_records)
+    if n == 0:
+        return [Finding("I_RECORD_COUNT", ERROR, "i-record",
+                        "no I record detected", None, {"count": 0})]
+    if n > 1:
+        return [Finding("I_RECORD_COUNT", ERROR, "i-record",
+                        f"{n} I records; exactly one is allowed - B record "
+                        "extension decoding is unreliable",
+                        doc.i_records[1][0], {"count": n})]
+    return []
+
+
+@rule("I_MISSING_EXT", ERROR, "i-record")
+def r_i_missing_ext(doc):
+    if not doc.i_records:
+        return []
+    have = {e.tlc for e in doc.i_ext}
+    missing = [t for t in MANDATORY_I_EXT if t not in have]
+    if missing:
+        return [Finding("I_MISSING_EXT", ERROR, "i-record",
+                        "I record missing mandatory extension(s): "
+                        + ", ".join(missing),
+                        doc.i_records[0][0], {"missing": missing})]
+    return []
+
+
+@rule("I_LEN_MISMATCH", ERROR, "i-record")
+def r_i_len_mismatch(doc):
+    if not doc.i_records:
+        return []
+    n, line = doc.i_records[0]
+    m = re.match(r"^I(\d{2})", line)
+    if not m:
+        return [Finding("I_LEN_MISMATCH", ERROR, "i-record",
+                        "I record has no 2-digit item count", n, {})]
+    expected = int(m.group(1)) * 7 + 3
+    if len(line) != expected:
+        return [Finding("I_LEN_MISMATCH", ERROR, "i-record",
+                        f"I record declares {m.group(1)} items so should be "
+                        f"{expected} chars, but is {len(line)}", n,
+                        {"declared": expected, "actual": len(line)})]
+    return []
+
+
+@rule("I_PTR_CHAIN", ERROR, "i-record")
+def r_i_ptr_chain(doc):
+    if not doc.i_records or not doc.i_ext:
+        return []
+    n = doc.i_records[0][0]
+    prev = 35          # the fixed B-record fields occupy columns 1-35
+    for idx, e in enumerate(doc.i_ext, start=1):
+        if e.start != prev + 1:
+            return [Finding("I_PTR_CHAIN", ERROR, "i-record",
+                            f"I record column pointers broken: item {idx} "
+                            f"({e.tlc}) starts at {e.start}, expected "
+                            f"{prev + 1}", n,
+                            {"item": idx, "start": e.start,
+                             "expected": prev + 1})]
+        if e.end < e.start:
+            return [Finding("I_PTR_CHAIN", ERROR, "i-record",
+                            f"I record item {idx} ({e.tlc}) ends at {e.end} "
+                            f"before it starts at {e.start}", n, {"item": idx})]
+        prev = e.end
+    return []
+
+
+@rule("TLC_UNKNOWN_I", WARNING, "i-record")
+def r_tlc_unknown_i(doc):
+    unknown = _unknown_tlc(doc.i_ext, KNOWN_I_TLC)
+    if unknown:
+        return [Finding("TLC_UNKNOWN_I", WARNING, "i-record",
+                        f"{len(unknown)} unrecognised I record TLC(s): "
+                        + ", ".join(unknown),
+                        doc.i_records[0][0], {"tlcs": unknown})]
+    return []
+
+
+@rule("J_RECORD_COUNT", ERROR, "j-record")
+def r_j_record_count(doc):
+    n = len(doc.j_records)
+    if n > 1:
+        return [Finding("J_RECORD_COUNT", ERROR, "j-record",
+                        f"there are {n} J records and there must only be one",
+                        doc.j_records[1][0], {"count": n})]
+    return []
+
+
+@rule("TLC_UNKNOWN_J", WARNING, "j-record")
+def r_tlc_unknown_j(doc):
+    unknown = _unknown_tlc(doc.j_ext, KNOWN_J_TLC)
+    if unknown:
+        return [Finding("TLC_UNKNOWN_J", WARNING, "j-record",
+                        f"{len(unknown)} unrecognised J record TLC(s): "
+                        + ", ".join(unknown),
+                        doc.j_records[0][0], {"tlcs": unknown})]
+    return []
+
+
+@rule("M_RECORD_COUNT", ERROR, "m-record")
+def r_m_record_count(doc):
+    n = len(doc.m_records)
+    if n > 1:
+        return [Finding("M_RECORD_COUNT", ERROR, "m-record",
+                        f"there are {n} M records and there must only be one",
+                        doc.m_records[1][0], {"count": n})]
+    return []
+
+
+@rule("TLC_UNKNOWN_M", WARNING, "m-record")
+def r_tlc_unknown_m(doc):
+    unknown = _unknown_tlc(doc.m_ext, KNOWN_M_TLC)
+    if unknown:
+        return [Finding("TLC_UNKNOWN_M", WARNING, "m-record",
+                        f"{len(unknown)} unrecognised M record TLC(s): "
+                        + ", ".join(unknown),
+                        doc.m_records[0][0], {"tlcs": unknown})]
+    return []
+
+
+def _ext_values(doc, tlc):
+    return [int(f.ext[tlc]) for f in doc.fixes
+            if tlc in f.ext and f.ext[tlc].isdigit()]
+
+
+@rule("ENL_MOP_ALL_ZERO", ERROR, "engine")
+def r_enl_mop_all_zero(doc):
+    for tlc in ("ENL", "MOP"):
+        values = _ext_values(doc, tlc)
+        if values and max(values) == 0:
+            return [Finding("ENL_MOP_ALL_ZERO", ERROR, "engine",
+                            f"{tlc} is zero across all {len(values)} fixes - "
+                            "possibly faulty hardware", None,
+                            {"tlc": tlc, "fixes": len(values)})]
+    return []
+
+
+@rule("ENL_MOP_MIN_LOW", WARNING, "engine")
+def r_enl_mop_min_low(doc):
+    for tlc in ("ENL", "MOP"):
+        values = _ext_values(doc, tlc)
+        if values and 0 < min(values) < ENL_MOP_MIN:
+            first = next(f for f in doc.fixes
+                         if f.ext.get(tlc, "").isdigit()
+                         and int(f.ext[tlc]) == min(values))
+            return [Finding("ENL_MOP_MIN_LOW", WARNING, "engine",
+                            f"minimum {tlc} is {min(values)}, below the "
+                            f"expected floor of {ENL_MOP_MIN}", first.line,
+                            {"tlc": tlc, "min": min(values)})]
+    return []

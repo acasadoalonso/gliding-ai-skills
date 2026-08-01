@@ -1,0 +1,30 @@
+{
+  "scanned": 308,
+  "conform": 261,
+  "rule_file_counts": {
+    "A_BAD_SEPARATOR": 224,
+    "A_SHORT_SERIAL": 256,
+    "B_GAPS": 114,
+    "B_LEN_MISMATCH": 3,
+    "CHAR_EMPTY_LINE": 9,
+    "CHAR_NON_ASCII": 65,
+    "C_FLIGHTDATE_MISMATCH": 4,
+    "ENL_MOP_ALL_ZERO": 12,
+    "ENL_MOP_MIN_LOW": 239,
+    "E_PEV_NO_FAST_FIX": 11,
+    "F_INTERVAL_LONG": 262,
+    "H_DTE_NO_LITERAL": 17,
+    "H_DTM_CODE_ONLY": 14,
+    "H_DUPLICATE_SUBTYPE": 3,
+    "H_FTY_MULTI_COMMA": 2,
+    "H_FTY_NOT_IGC": 250,
+    "H_FTY_NO_COMMA": 3,
+    "H_MISSING_MANDATORY": 22,
+    "I_LEN_MISMATCH": 3,
+    "I_MISSING_EXT": 29,
+    "I_PTR_CHAIN": 3,
+    "L_BAD_PREFIX": 25,
+    "TIME_DUPLICATE": 92,
+    "TLC_UNKNOWN_I": 3
+  }
+}

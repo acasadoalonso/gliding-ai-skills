@@ -640,3 +640,141 @@ def r_g_trailing_records(doc):
                      "{n} non-G/L record(s) after the first G record, first a "
                      "{detail} record at line {line} - truncated or "
                      "concatenated file")
+
+
+# --------------------------------------------------------------------------
+# C records - task declaration  (section 8)
+# --------------------------------------------------------------------------
+
+C_HEADER_RE = re.compile(
+    r"^C(\d{6})(\d{6})(\d{6})(\d{4})(\d{2})")
+
+
+def _c_header(doc):
+    """Return (line_no, match) for the declaration header C record, or None.
+
+    A file with no C records is not a finding - declarations are optional.
+    """
+    c = doc.of_type("C")
+    if not c:
+        return None
+    n, line = c[0]
+    m = C_HEADER_RE.match(line)
+    return (n, m) if m else None
+
+
+def _ddmmyy_key(d):
+    """Sortable YYMMDD key from a DDMMYY string."""
+    return d[4:6] + d[2:4] + d[0:2]
+
+
+@rule("C_DECL_AFTER_FLIGHT", ERROR, "c-record")
+def r_c_decl_after_flight(doc):
+    hdr = _c_header(doc)
+    if not hdr or not doc.flight_date:
+        return []
+    n, m = hdr
+    if _ddmmyy_key(m.group(1)) > _ddmmyy_key(doc.flight_date):
+        return [Finding("C_DECL_AFTER_FLIGHT", ERROR, "c-record",
+                        f"declaration date {m.group(1)} is after the flight "
+                        f"date {doc.flight_date}", n,
+                        {"declared": m.group(1), "flight": doc.flight_date})]
+    return []
+
+
+@rule("C_ZERO_DECL_TIME", ERROR, "c-record")
+def r_c_zero_decl_time(doc):
+    hdr = _c_header(doc)
+    if not hdr:
+        return []
+    n, m = hdr
+    if m.group(2) == "000000":
+        return [Finding("C_ZERO_DECL_TIME", ERROR, "c-record",
+                        "declaration time is zero or undecodable", n, {})]
+    return []
+
+
+@rule("C_FLIGHTDATE_MISMATCH", ERROR, "c-record")
+def r_c_flightdate_mismatch(doc):
+    hdr = _c_header(doc)
+    if not hdr or not doc.flight_date:
+        return []
+    n, m = hdr
+    embedded = m.group(3)
+    if embedded != "000000" and embedded != doc.flight_date:
+        return [Finding("C_FLIGHTDATE_MISMATCH", ERROR, "c-record",
+                        f"flight date in the declaration ({embedded}) does not "
+                        f"match HFDTE ({doc.flight_date})", n,
+                        {"declared": embedded, "hfdte": doc.flight_date})]
+    return []
+
+
+@rule("C_COUNT_MISMATCH", ERROR, "c-record")
+def r_c_count_mismatch(doc):
+    hdr = _c_header(doc)
+    if not hdr:
+        return []
+    n, m = hdr
+    expected = int(m.group(5)) + 5
+    actual = len(doc.of_type("C"))
+    if actual != expected:
+        return [Finding("C_COUNT_MISMATCH", ERROR, "c-record",
+                        f"declaration says {m.group(5)} waypoints so {expected} "
+                        f"C records are expected, found {actual}", n,
+                        {"expected": expected, "actual": actual})]
+    return []
+
+
+# --------------------------------------------------------------------------
+# E records - events  (section 10)
+# --------------------------------------------------------------------------
+
+KNOWN_E_CODES = {"ATS", "BFI", "CGD", "FIN", "FLP", "GSP", "LOV", "MAC",
+                 "OA1", "OA2", "OA3", "ONT", "PEV", "STA", "TPC", "TRT", "UND"}
+
+PEV_FAST_FIX_COUNT = 30
+
+
+@rule("E_UNKNOWN_CODE", WARNING, "e-record")
+def r_e_unknown_code(doc):
+    hits = [(n, l[7:10]) for n, l in doc.of_type("E")
+            if len(l) >= 10 and l[7:10] not in KNOWN_E_CODES]
+    return summarize(*_a("E_UNKNOWN_CODE", WARNING, "e-record"), hits,
+                     "{n} E record(s) with an unrecognised event code, first "
+                     "{detail!r} at line {line}")
+
+
+@rule("E_NOT_FOLLOWED_BY_B", ERROR, "e-record")
+def r_e_not_followed_by_b(doc):
+    hits = []
+    for n, line in doc.of_type("E"):
+        nxt = doc.lines[n] if n < len(doc.lines) else ""
+        if not nxt.startswith("B"):
+            hits.append((n, "no B record follows"))
+        elif nxt[1:7] != line[1:7]:
+            hits.append((n, f"timestamp {nxt[1:7]} != {line[1:7]}"))
+    return summarize(*_a("E_NOT_FOLLOWED_BY_B", ERROR, "e-record"), hits,
+                     "{n} E record(s) not followed by a B record with a "
+                     "matching timestamp ({detail}, first at line {line})")
+
+
+@rule("E_PEV_NO_FAST_FIX", WARNING, "e-record")
+def r_e_pev_no_fast_fix(doc):
+    """After a pilot event the recorder must switch to fast fixing: at least
+    PEV_FAST_FIX_COUNT fixes within that many seconds (spec 3.6)."""
+    hits = []
+    for n, line in doc.of_type("E"):
+        if len(line) < 10 or line[7:10] != "PEV":
+            continue
+        after = [f for f in doc.fixes if f.line > n]
+        if not after:
+            continue
+        window = [f for f in after
+                  if f.time - after[0].time < PEV_FAST_FIX_COUNT]
+        if len(window) < PEV_FAST_FIX_COUNT:
+            hits.append((n, f"{len(window)} fixes"))
+    return summarize(*_a("E_PEV_NO_FAST_FIX", WARNING, "e-record"), hits,
+                     "{n} PEV event(s) not followed by fast fixing - expected "
+                     + str(PEV_FAST_FIX_COUNT) +
+                     " fixes in the next " + str(PEV_FAST_FIX_COUNT) +
+                     "s, got {detail} (first at line {line})")

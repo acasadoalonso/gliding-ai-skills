@@ -165,6 +165,21 @@ MUTATIONS = {
                                        "K110139ABC015"),
     "G_MISSING": lambda L: drop(L, lambda l: l.startswith("G")),
     "G_TRAILING_RECORDS": lambda L: L + [b(START + 20)],
+    # --- Task 6: C and E records ---
+    "C_DECL_AFTER_FLIGHT": lambda L: replace(
+        L, lambda l: l.startswith("C1307"), "C140726120000130726000102TASK"),
+    "C_ZERO_DECL_TIME": lambda L: replace(
+        L, lambda l: l.startswith("C1307"), "C130726000000130726000102TASK"),
+    "C_FLIGHTDATE_MISMATCH": lambda L: replace(
+        L, lambda l: l.startswith("C1307"), "C130726120000110726000102TASK"),
+    "C_COUNT_MISMATCH": lambda L: replace(
+        L, lambda l: l.startswith("C1307"), "C130726120000130726000104TASK"),
+    "E_UNKNOWN_CODE": lambda L: replace(
+        L, lambda l: l.startswith("E"), "E110138ZZZ"),
+    "E_NOT_FOLLOWED_BY_B": lambda L: replace(
+        L, lambda l: l.startswith("E"), "E110159ATS"),
+    "E_PEV_NO_FAST_FIX": lambda L: replace(
+        L, lambda l: l.startswith("E"), "E110138PEV"),
 }
 
 

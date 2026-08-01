@@ -1,0 +1,131 @@
+#!/usr/bin/env python3
+"""Generate test fixtures: one baseline conformant file plus one mutation per rule.
+
+The baseline is built column-by-column rather than typed by hand, because the
+B-record extension columns declared in the I record must line up exactly and an
+off-by-one there would silently break half the rules.
+
+Run: python3 build_fixtures.py
+"""
+
+from pathlib import Path
+
+FIXTURES = Path(__file__).resolve().parent / "fixtures"
+
+# I record declares FXA 36-38, SIU 39-40, ENL 41-43 -> B records are 43 chars.
+I_RECORD = "I033638FXA3940SIU4143ENL"
+J_RECORD = "J020810WDI1113WSP"
+
+
+def b(seconds, valid="A", galt=550, enl="050"):
+    """Build one 43-character B record at the given second-of-day."""
+    hh, mm, ss = seconds // 3600, seconds % 3600 // 60, seconds % 60
+    return (
+        "B"
+        + f"{hh:02d}{mm:02d}{ss:02d}"
+        + "5144250N"
+        + "01747333E"
+        + valid
+        + "00500"
+        + f"{galt:05d}"
+        + "010"      # FXA
+        + "09"       # SIU
+        + enl        # ENL
+    )
+
+
+def k(seconds):
+    """K record matching J_RECORD's last end pointer (13)."""
+    hh, mm, ss = seconds // 3600, seconds % 3600 // 60, seconds % 60
+    return "K" + f"{hh:02d}{mm:02d}{ss:02d}" + "270" + "015"
+
+
+START = 11 * 3600 + 1 * 60 + 35
+
+BASE_LINES = [
+    "ANAV240406",
+    "HFDTEDATE:130726,01",
+    "HFPLTPILOTINCHARGE:Test Pilot",
+    "HFCM2CREW2:NIL",
+    "HFGTYGLIDERTYPE:LS 7",
+    "HFGIDGLIDERID:D-3903",
+    "HFDTMGPSDATUM:WGS84",
+    "HFRFWFIRMWAREVERSION:1.0",
+    "HFRHWHARDWAREVERSION:1.0",
+    "HFFTYFRTYPE:Naviter,Oudie N IGC",
+    "HFGPSRECEIVER:uBlox,MAX-M8Q,72,50000",
+    "HFPRSPRESSALTSENSOR:Bosch,BMP390L,9150",
+    "HFFRSSECURITY OK",
+    I_RECORD,
+    J_RECORD,
+    # Declaration: 2 waypoints -> 5 + 2 = 7 C records total.
+    "C130726120000130726000102TASK",
+    "C5144250N01747333ETAKEOFF",
+    "C5144250N01747333ESTART",
+    "C5135226N01712760ETP1",
+    "C5126569N01749664ETP2",
+    "C5142083N01750783EFINISH",
+    "C5142083N01750783ELANDING",
+    "F110130010203040506",
+    b(START + 0),
+    b(START + 1),
+    b(START + 2),
+    "E" + f"{(START + 3) // 3600:02d}{(START + 3) % 3600 // 60:02d}{(START + 3) % 60:02d}" + "ATS",
+    b(START + 3),
+    b(START + 4),
+    k(START + 4),
+    b(START + 5),
+    "F110230010203040506",
+    b(START + 6),
+    b(START + 7),
+    b(START + 8),
+    b(START + 9),
+    "LNAVPILOT COMMENT",
+    "G0123456789ABCDEF0123456789ABCDEF",
+]
+
+
+def replace(lines, predicate, new):
+    """Return a copy with the first line matching predicate replaced."""
+    out = list(lines)
+    for i, line in enumerate(out):
+        if predicate(line):
+            out[i] = new
+            return out
+    raise AssertionError("no line matched the predicate")
+
+
+def drop(lines, predicate):
+    out = [l for l in lines if not predicate(l)]
+    assert len(out) < len(lines), "predicate dropped nothing"
+    return out
+
+
+MUTATIONS = {
+    # --- Task 2: record type and character set ---
+    "RECORD_TYPE_INVALID": lambda L: L[:14] + ["ZBOGUSRECORD"] + L[14:],
+    "WILDCARD_DATA": lambda L: replace(L, lambda l: l.startswith("B"), b(START)[:-3] + "0?0"),
+    "WILDCARD_META": lambda L: replace(L, lambda l: l.startswith("HFGTY"), "HFGTYGLIDERTYPE:LS ?"),
+    "CHAR_CONTROL": lambda L: L[:14] + ["LNAV\x01BAD"] + L[14:],
+    "CHAR_NON_ASCII": lambda L: L[:14] + ["LNAVPILOT Jose Ramirezé"] + L[14:],
+    "CHAR_EMPTY_LINE": lambda L: L[:14] + [""] + L[14:],
+    "CHAR_DISALLOWED": lambda L: L[:14] + ["LNAVBAD$VALUE"] + L[14:],
+}
+
+
+def main():
+    # Written as latin-1 bytes, not ASCII text: the CHAR_NON_ASCII fixture needs a
+    # real high byte on disk, which is how accented pilot names actually reach us
+    # in appended L records. Everything else in these fixtures is plain ASCII.
+    FIXTURES.mkdir(parents=True, exist_ok=True)
+    (FIXTURES / "valid_baseline.igc").write_bytes(
+        ("\n".join(BASE_LINES) + "\n").encode("ascii"))
+    for rule_id, mutate in MUTATIONS.items():
+        lines = mutate(list(BASE_LINES))
+        (FIXTURES / f"{rule_id}.igc").write_bytes(
+            ("\n".join(lines) + "\n").encode("latin-1", errors="replace"))
+    print(f"wrote baseline + {len(MUTATIONS)} fixtures to {FIXTURES}")
+
+
+if __name__ == "__main__":
+    main()

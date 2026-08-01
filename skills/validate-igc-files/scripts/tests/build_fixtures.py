@@ -126,6 +126,9 @@ MUTATIONS = {
                                           "HFDTE130726"),
     "H_DTM_NOT_WGS84": lambda L: replace(L, lambda l: l.startswith("HFDTM"),
                                          "HFDTMGPSDATUM:OSGB36"),
+    # Datum code 100 IS WGS84, so this is a text-only deviation, not a wrong datum.
+    "H_DTM_CODE_ONLY": lambda L: replace(L, lambda l: l.startswith("HFDTM"),
+                                         "HFDTM100GPSDATUM:WGS-1984"),
     "H_FTY_NO_COMMA": lambda L: replace(L, lambda l: l.startswith("HFFTY"),
                                         "HFFTYFRTYPE:Naviter Oudie N IGC"),
     "H_FTY_MULTI_COMMA": lambda L: replace(L, lambda l: l.startswith("HFFTY"),

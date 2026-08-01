@@ -323,13 +323,51 @@ def r_h_dte_no_literal(doc):
     return []
 
 
+WGS84_DATUM_CODE = "100"
+
+
+def _dtm(doc):
+    """Return (line_no, text, datum_code) for HFDTM, or None.
+
+    Layout is HFDTM<NNN><free text>, so the three digits after the subtype are
+    the datum code. Code 100 is WGS84.
+    """
+    entry = doc.headers.get("DTM")
+    if not entry:
+        return None
+    n, line = entry
+    code = line[5:8] if line[5:8].isdigit() else None
+    return n, line, code
+
+
 @rule("H_DTM_NOT_WGS84", ERROR, "h-record")
 def r_h_dtm_not_wgs84(doc):
-    entry = doc.headers.get("DTM")
-    if entry and "WGS84" not in entry[1].upper():
-        return [Finding("H_DTM_NOT_WGS84", ERROR, "h-record",
-                        f"incorrect geodetic datum: {entry[1]!r} (WGS84 required)",
-                        entry[0], {})]
+    """A datum that is neither named WGS84 nor coded 100 is a real error.
+
+    Code 100 IS WGS84, so a file declaring it has the right datum whatever the
+    free text says - that case is H_DTM_CODE_ONLY, a warning.
+    """
+    entry = _dtm(doc)
+    if not entry:
+        return []
+    n, line, code = entry
+    if "WGS84" in line.upper() or code == WGS84_DATUM_CODE:
+        return []
+    return [Finding("H_DTM_NOT_WGS84", ERROR, "h-record",
+                    f"incorrect geodetic datum: {line!r} (WGS84 required)",
+                    n, {"datum": line})]
+
+
+@rule("H_DTM_CODE_ONLY", WARNING, "h-record")
+def r_h_dtm_code_only(doc):
+    entry = _dtm(doc)
+    if not entry:
+        return []
+    n, line, code = entry
+    if code == WGS84_DATUM_CODE and "WGS84" not in line.upper():
+        return [Finding("H_DTM_CODE_ONLY", WARNING, "h-record",
+                        f"datum is coded {code} (WGS84) but the text does not "
+                        f"say WGS84: {line!r}", n, {"datum": line})]
     return []
 
 
@@ -760,23 +798,30 @@ def r_e_not_followed_by_b(doc):
 
 @rule("E_PEV_NO_FAST_FIX", WARNING, "e-record")
 def r_e_pev_no_fast_fix(doc):
-    """After a pilot event the recorder must switch to fast fixing: at least
-    PEV_FAST_FIX_COUNT fixes within that many seconds (spec 3.6)."""
+    """After a pilot event the recorder must switch to fast fixing (spec 3.6).
+
+    Measured as the document states it: take the next PEV_FAST_FIX_COUNT fixes
+    and check the elapsed time across them does not exceed that many seconds.
+    Counting fixes inside a fixed window instead would report a clean 1 Hz
+    logger as one fix short, since 30 one-second fixes span only 29 seconds.
+    """
     hits = []
     for n, line in doc.of_type("E"):
         if len(line) < 10 or line[7:10] != "PEV":
             continue
-        after = [f for f in doc.fixes if f.line > n]
-        if not after:
+        window = [f for f in doc.fixes if f.line > n][:PEV_FAST_FIX_COUNT]
+        if not window:
             continue
-        window = [f for f in after
-                  if f.time - after[0].time < PEV_FAST_FIX_COUNT]
         if len(window) < PEV_FAST_FIX_COUNT:
-            hits.append((n, f"{len(window)} fixes"))
+            hits.append((n, f"only {len(window)} fixes remain"))
+        else:
+            span = window[-1].time - window[0].time
+            if span > PEV_FAST_FIX_COUNT:
+                hits.append((n, f"{span}s"))
     return summarize(*_a("E_PEV_NO_FAST_FIX", WARNING, "e-record"), hits,
-                     "{n} PEV event(s) not followed by fast fixing - expected "
+                     "{n} PEV event(s) not followed by fast fixing - the next "
                      + str(PEV_FAST_FIX_COUNT) +
-                     " fixes in the next " + str(PEV_FAST_FIX_COUNT) +
+                     " fixes should span at most " + str(PEV_FAST_FIX_COUNT) +
                      "s, got {detail} (first at line {line})")
 
 

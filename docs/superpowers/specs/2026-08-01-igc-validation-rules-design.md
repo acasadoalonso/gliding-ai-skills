@@ -202,6 +202,11 @@ present.
 `L_BAD_PREFIX` reporting is capped at 20 occurrences per file, per the reference
 tool, to avoid flooding a single file's block.
 
+`B_V_FLAG_NONZERO_ALT` departs from the reference document, which classifies it as
+an error (Spec A4.1.3). Reviewed and confirmed as a WARNING on 2026-08-01: it
+affects 44 files, and a fix flagged `V` is invalid and therefore excluded from
+scoring regardless of what altitude the recorder wrote alongside it.
+
 ### Observations
 
 - **ENL engine-on** — unchanged behaviour: ENL > 500 sustained for at least 30

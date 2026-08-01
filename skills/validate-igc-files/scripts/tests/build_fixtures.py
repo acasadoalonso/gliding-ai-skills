@@ -180,6 +180,21 @@ MUTATIONS = {
         L, lambda l: l.startswith("E"), "E110159ATS"),
     "E_PEV_NO_FAST_FIX": lambda L: replace(
         L, lambda l: l.startswith("E"), "E110138PEV"),
+    # --- Task 7: timing, F and L records ---
+    "TIME_OUT_OF_SEQUENCE": lambda L: [
+        b(START - 30) if l == b(START + 5) else l for l in L],
+    "TIME_DUPLICATE": lambda L: [
+        b(START + 4) if l == b(START + 5) else l for l in L],
+    "F_RECORDS_NONE": lambda L: drop(L, lambda l: l.startswith("F")),
+    "F_RECORDS_ONE": lambda L: drop(L, lambda l: l.startswith("F1102")),
+    "F_INTERVAL_LONG": lambda L: [
+        "F120130010203040506" if l.startswith("F1102") else l for l in L],
+    # +40s not something larger on purpose: the rule infers the nominal interval
+    # from elapsed time over fix count, so an extravagant gap raises the inferred
+    # nominal past the 60s cut-off and the rule correctly declines to judge.
+    "B_GAPS": lambda L: [b(START + 40) if l == b(START + 9) else l for l in L],
+    "L_BAD_PREFIX": lambda L: replace(
+        L, lambda l: l.startswith("LNAV"), "LZZZUNKNOWN PREFIX"),
 }
 
 

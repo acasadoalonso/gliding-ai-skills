@@ -778,3 +778,125 @@ def r_e_pev_no_fast_fix(doc):
                      + str(PEV_FAST_FIX_COUNT) +
                      " fixes in the next " + str(PEV_FAST_FIX_COUNT) +
                      "s, got {detail} (first at line {line})")
+
+
+# --------------------------------------------------------------------------
+# Sequence, timing, F records and L records  (sections 9, 12)
+# --------------------------------------------------------------------------
+
+F_MAX_INTERVAL_SECONDS = 300
+B_GAP_TOLERANCE_SECONDS = 1
+L_PREFIX_REPORT_CAP = 20
+GENERIC_L_PREFIXES = {"PLT", "OOI", "PFC", "SOF", "FLA", "SEE", "CU:"}
+
+
+@rule("TIME_OUT_OF_SEQUENCE", ERROR, "timing")
+def r_time_out_of_sequence(doc):
+    hits = []
+    for prev, cur in zip(doc.fixes, doc.fixes[1:]):
+        if cur.time < prev.time:
+            hits.append((cur.line, _hms(cur.time)))
+    return summarize(*_a("TIME_OUT_OF_SEQUENCE", ERROR, "timing"), hits,
+                     "{n} fix(es) with a timestamp earlier than the previous "
+                     "fix, first {detail} at line {line}")
+
+
+@rule("TIME_DUPLICATE", WARNING, "timing")
+def r_time_duplicate(doc):
+    hits = []
+    for prev, cur in zip(doc.fixes, doc.fixes[1:]):
+        if cur.time == prev.time and cur.valid == "A" and prev.valid == "A":
+            hits.append((cur.line, _hms(cur.time)))
+    return summarize(*_a("TIME_DUPLICATE", WARNING, "timing"), hits,
+                     "{n} duplicate timestamp(s) between consecutive valid "
+                     "fixes, first {detail} at line {line}")
+
+
+def _f_times(doc):
+    out = []
+    for n, line in doc.of_type("F"):
+        if len(line) >= 7 and line[1:7].isdigit():
+            hh, mm, ss = int(line[1:3]), int(line[3:5]), int(line[5:7])
+            out.append((n, hh * 3600 + mm * 60 + ss))
+    return out
+
+
+@rule("F_RECORDS_NONE", ERROR, "f-record")
+def r_f_records_none(doc):
+    if not doc.of_type("F"):
+        return [Finding("F_RECORDS_NONE", ERROR, "f-record",
+                        "no F (satellite constellation) records - regular F "
+                        "records are mandatory", None, {})]
+    return []
+
+
+@rule("F_RECORDS_ONE", WARNING, "f-record")
+def r_f_records_one(doc):
+    if len(doc.of_type("F")) == 1:
+        return [Finding("F_RECORDS_ONE", WARNING, "f-record",
+                        "only one F record in the whole file",
+                        doc.of_type("F")[0][0], {})]
+    return []
+
+
+@rule("F_INTERVAL_LONG", WARNING, "f-record")
+def r_f_interval_long(doc):
+    times = _f_times(doc)
+    hits = []
+    for (_, t0), (n1, t1) in zip(times, times[1:]):
+        if t1 - t0 > F_MAX_INTERVAL_SECONDS:
+            hits.append((n1, f"{t1 - t0}s"))
+    hits.sort(key=lambda h: -int(h[1][:-1]))
+    return summarize(*_a("F_INTERVAL_LONG", WARNING, "f-record"), hits,
+                     "{n} F record interval(s) longer than " +
+                     str(F_MAX_INTERVAL_SECONDS) +
+                     "s, longest {detail} ending at line {line}")
+
+
+@rule("B_GAPS", WARNING, "timing")
+def r_b_gaps(doc):
+    """Gaps relative to the file's own nominal fix interval.
+
+    The nominal rate is inferred from elapsed time over fix count rather than
+    assumed, because recorders log at anything from 1 to 10 seconds. Files whose
+    inferred interval exceeds 60s are treated as unmeasurable and skipped.
+    """
+    if len(doc.fixes) < 3:
+        return []
+    span = doc.fixes[-1].time - doc.fixes[0].time
+    if span <= 0:
+        return []
+    nominal = round(span / (len(doc.fixes) - 1))
+    if nominal <= 0 or nominal > 60:
+        return []
+    hits = []
+    for prev, cur in zip(doc.fixes, doc.fixes[1:]):
+        gap = cur.time - prev.time
+        if gap > nominal + B_GAP_TOLERANCE_SECONDS:
+            hits.append((cur.line, f"{gap}s"))
+    hits.sort(key=lambda h: -int(h[1][:-1]))
+    return summarize(*_a("B_GAPS", WARNING, "timing"), hits,
+                     "{n} gap(s) in B record fixing beyond the nominal " +
+                     str(nominal) + "s interval, longest {detail} at line {line}")
+
+
+@rule("L_BAD_PREFIX", WARNING, "l-record")
+def r_l_bad_prefix(doc):
+    own = doc.a_record[1:4] if doc.a_record else ""
+    limit = doc.first_g or len(doc.lines) + 1
+    hits = []
+    for n, line in doc.of_type("L"):
+        if n >= limit:
+            break
+        prefix = line[1:4]
+        if prefix != own and prefix not in GENERIC_L_PREFIXES:
+            hits.append((n, prefix))
+        if len(hits) >= L_PREFIX_REPORT_CAP:
+            break
+    return summarize(*_a("L_BAD_PREFIX", WARNING, "l-record"), hits,
+                     "{n} L record(s) with an unrecognised manufacturer prefix, "
+                     "first {detail!r} at line {line}")
+
+
+def _hms(seconds):
+    return f"{seconds // 3600:02d}:{seconds % 3600 // 60:02d}:{seconds % 60:02d}"

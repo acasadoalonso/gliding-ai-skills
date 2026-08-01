@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 """Scan a directory recursively for .igc/.IGC files and validate each against
-the FAI/IGC flight-log format (formulas/IGCformat.md, Jan 2026 / AL10).
+the FAI/IGC flight-log format (formulas/IGCformat.md and
+formulas/IGC_Validation_Rules.md).
+
+This implementation provides core structural validation: A-record, mandatory
+H-records, B-record formatting, record order, G-security record, character set,
+and ENL engine-on evidence detection. Additional validation dimensions from
+IGC_Validation_Rules.md (I-record structure, H-record subtypes, sequence/timing
+checks, F-records, etc.) can be added in future iterations.
 
 Prints a report listing ONLY the files that do not conform, with the specific
 checks each one failed. Exit code 0 if all conform, 1 if any file fails.

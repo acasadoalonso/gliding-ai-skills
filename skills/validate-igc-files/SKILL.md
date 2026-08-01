@@ -2,24 +2,26 @@
 name: validate-igc-files
 description: >-
   Scan a directory tree for IGC flight logs (.igc/.IGC) and check every file
-  against the FAI/IGC flight-log format (formulas/IGCformat.md, Jan 2026 /
-  AL10), reporting only the files that do NOT conform and why. Use whenever the
-  user wants to validate, check, verify, or audit the IGC files in a directory
-  or folder — e.g. "check the IGC files in <dir>", "which of these flight logs
-  are not conformant", "scan this folder for bad IGC files" — as opposed to
-  validating a single downloaded file (that is the download-igc skill). Asks
-  for the directory if not given, scans it recursively, and runs the bundled
-  validator (A record first, mandatory H records, well-formed B fixes, record
-  order, trailing G security record, no empty lines, ASCII-only characters).
-  Also reports files with ENL engine-on evidence — sustained high Engine
-  Noise Level in the B-record fixes — so use it too when the user asks which
-  flights show engine running / ENL data / motor use in their IGC logs.
+  against the FAI/IGC flight-log format (formulas/IGCformat.md and
+  formulas/IGC_Validation_Rules.md), reporting only the files that do NOT
+  conform and why. Use whenever the user wants to validate, check, verify, or
+  audit the IGC files in a directory or folder — e.g. "check the IGC files in
+  <dir>", "which of these flight logs are not conformant", "scan this folder
+  for bad IGC files" — as opposed to validating a single downloaded file (that
+  is the download-igc skill). Asks for the directory if not given, scans it
+  recursively, and runs the bundled validator (A record first, mandatory H
+  records, well-formed B fixes, record order, trailing G security record, no
+  empty lines, ASCII-only characters). Also reports files with ENL engine-on
+  evidence — sustained high Engine Noise Level in the B-record fixes — so use
+  it too when the user asks which flights show engine running / ENL data /
+  motor use in their IGC logs.
 ---
 
 # Validate IGC files in a directory
 
 Batch-validate every IGC flight log under a directory against the FAI/IGC
-flight-log format defined in `/home/angel/src/formulas/IGCformat.md`, and
+flight-log format defined in `/home/angel/src/formulas/IGCformat.md` and
+validation rules in `/home/angel/src/formulas/IGC_Validation_Rules.md`, and
 report only the non-conforming files.
 
 ## Input to collect
@@ -51,7 +53,7 @@ each if the user said so).
    from one logger model missing the same record. Then the ENL engine-on
    files, most-sustained first. Do not list conforming files unless asked.
 
-## Checks performed (from IGCformat.md)
+## Checks performed (from IGCformat.md and IGC_Validation_Rules.md)
 
 - **A record** — the first line must be the FR manufacturer/ID record.
 - **Mandatory H records** — DTE, PLT, GTY, GID, DTM headers present. FXA

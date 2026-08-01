@@ -152,6 +152,19 @@ MUTATIONS = {
         for i, l in enumerate(L)],
     "ENL_MOP_MIN_LOW": lambda L: replace(
         L, lambda l: l.startswith("B"), b(START, enl="005")),
+    # --- Task 5: B / K / G records ---
+    "B_MALFORMED": lambda L: replace(L, lambda l: l.startswith("B"),
+                                     "B999999XXXXXXXNXXXXXXXXEA0050000550010090500"),
+    "B_LEN_MISMATCH": lambda L: replace(L, lambda l: l.startswith("B"),
+                                        b(START)[:-2]),
+    "B_V_FLAG_NONZERO_ALT": lambda L: replace(L, lambda l: l.startswith("B"),
+                                              b(START, valid="V", galt=550)),
+    "K_LEN_MISMATCH": lambda L: replace(L, lambda l: l.startswith("K"),
+                                        "K1101390"),
+    "K_NON_NUMERIC": lambda L: replace(L, lambda l: l.startswith("K"),
+                                       "K110139ABC015"),
+    "G_MISSING": lambda L: drop(L, lambda l: l.startswith("G")),
+    "G_TRAILING_RECORDS": lambda L: L + [b(START + 20)],
 }
 
 

@@ -554,3 +554,89 @@ def r_enl_mop_min_low(doc):
                             f"expected floor of {ENL_MOP_MIN}", first.line,
                             {"tlc": tlc, "min": min(values)})]
     return []
+
+
+# --------------------------------------------------------------------------
+# B, K and G records  (sections 6, 11)
+# --------------------------------------------------------------------------
+
+@rule("B_MALFORMED", ERROR, "b-record")
+def r_b_malformed(doc):
+    if not doc.of_type("B"):
+        return [Finding("B_MALFORMED", ERROR, "b-record",
+                        "no B (fix) records", None, {"count": 0})]
+    hits = [(n, "") for n in doc.bad_b]
+    return summarize(*_a("B_MALFORMED", ERROR, "b-record"), hits,
+                     "{n} malformed or truncated B record(s) - bad time, "
+                     "N/S, E/W, A/V or altitude field (first at line {line})")
+
+
+@rule("B_LEN_MISMATCH", ERROR, "b-record")
+def r_b_len_mismatch(doc):
+    if not doc.fixes:
+        return []
+    expected = doc.i_ext[-1].end if doc.i_ext else 35
+    hits = [(f.line, str(len(f.raw))) for f in doc.fixes
+            if len(f.raw) != expected]
+    return summarize(*_a("B_LEN_MISMATCH", ERROR, "b-record"), hits,
+                     "{n} B record(s) are " + str(expected) +
+                     " chars per the I record but measure {detail} "
+                     "(first at line {line})")
+
+
+@rule("B_V_FLAG_NONZERO_ALT", WARNING, "b-record")
+def r_b_v_flag_nonzero_alt(doc):
+    hits = [(f.line, str(f.galt)) for f in doc.fixes
+            if f.valid == "V" and f.galt != 0]
+    return summarize(*_a("B_V_FLAG_NONZERO_ALT", WARNING, "b-record"), hits,
+                     "{n} fix(es) flagged invalid (V) carry a non-zero GNSS "
+                     "altitude, first {detail} m at line {line}")
+
+
+def _k_expected_len(doc):
+    return max((e.end for e in doc.j_ext), default=None)
+
+
+@rule("K_LEN_MISMATCH", ERROR, "k-record")
+def r_k_len_mismatch(doc):
+    expected = _k_expected_len(doc)
+    if expected is None or len(doc.j_records) != 1:
+        return []
+    hits = [(n, str(len(l))) for n, l in doc.of_type("K") if len(l) != expected]
+    return summarize(*_a("K_LEN_MISMATCH", ERROR, "k-record"), hits,
+                     "{n} K record(s) should be " + str(expected) +
+                     " chars per the J record but measure {detail} "
+                     "(first at line {line})")
+
+
+@rule("K_NON_NUMERIC", ERROR, "k-record")
+def r_k_non_numeric(doc):
+    if len(doc.j_records) != 1:
+        return []
+    hits = [(n, "") for n, l in doc.of_type("K")
+            if len(l) > 7 and not l[7:].isdigit()]
+    return summarize(*_a("K_NON_NUMERIC", ERROR, "k-record"), hits,
+                     "{n} K record(s) contain non-numeric data after the "
+                     "timestamp (first at line {line})")
+
+
+@rule("G_MISSING", ERROR, "g-record")
+def r_g_missing(doc):
+    if doc.first_g is None:
+        return [Finding("G_MISSING", ERROR, "g-record",
+                        "no G (security) record - the file is truncated or its "
+                        "security data was stripped, so it cannot be validated",
+                        None, {})]
+    return []
+
+
+@rule("G_TRAILING_RECORDS", ERROR, "g-record")
+def r_g_trailing_records(doc):
+    if doc.first_g is None:
+        return []
+    hits = [(n, l[0]) for n, l in doc.numbered()
+            if n > doc.first_g and l and l[0] not in "GL"]
+    return summarize(*_a("G_TRAILING_RECORDS", ERROR, "g-record"), hits,
+                     "{n} non-G/L record(s) after the first G record, first a "
+                     "{detail} record at line {line} - truncated or "
+                     "concatenated file")

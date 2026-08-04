@@ -1,8 +1,0 @@
-{
-  "comp": "24-fai-egc",
-  "contest_id": 5337,
-  "title": "24th FAI European Gliding Championships",
-  "subtitle": "Ostrów Wielkopolski Michałków, Poland — 12–25 July 2026",
-  "class_files": ["club.json", "15m.json", "standard.json"],
-  "classes": {"club.json": 10225, "15m.json": 10226, "standard.json": 10227}
-}

@@ -5,15 +5,11 @@
 cucFileLocation='/var/www/html/cuc/' 
 DBpath='/var/www/data/SWS/' 
 SARpath='/var/www/data/SWS/' 
-DBhost='mariadb' 
-DBname='SWIFACE' 
-DBtable='OGNDATA' 
-SQLite3='SWiface.db' 
-DBuser='ogn' 
-DBpasswd='eNrLT88DAAKMAUU=' 
-DBuserread='ogn' 
-DBpasswdread='eNrLT88DAAKMAUU=' 
-MySQL=True 
+DBhost='mariadb'
+DBname='SWIFACE'
+DBtable='OGNDATA'
+SQLite3='SWiface.db'
+MySQL=True
 Initials='SGPF' 
 SWSserver='http://glidertracking.fai.org/' 
 TPTserver='http://glidertracking.fai.org/' 
@@ -29,17 +25,18 @@ DDBhost='ddb.glidernet.org'
 DDBport='80' 
 DDBurl1='http://DDB.glidernet.org/download/?j=2' 
 DDBurl2='http://DDB.glidernet.org/download/?j=2' 
-GIST=True 
-GIST_USER='acasadoalonso' 
-GIST_TOKEN='eNpLzyiIdyssznX3rfRKc7RILnbNTwkLrvJ3Nwkqjgo3NXcMN7LMKcquAgAlew3v' 
-clientid='' 
-secretkey='' 
-OGNTRACKERS=False 
-DISTHOME='' 
-DIFFALT='' 
-DIFFAVG='' 
-FAIPWD='M1g5RnRPMmNMNg==' 
-prt=False 
+GIST=True
+GIST_USER='acasadoalonso'
+OGNTRACKERS=False
+DISTHOME=''
+DIFFALT=''
+DIFFAVG=''
+prt=False
+
+# Credentials (DBuser, DBpasswd, DBuserread, DBpasswdread, GIST_TOKEN,
+# clientid, secretkey, FAIPWD) live in config_secrets.py — chmod 600, kept
+# out of this file so config.py can be read/shared without exposing secrets.
+from config_secrets import *  # noqa: F401,F403
 # --------------------------------------#
 # -*- coding: UTF-8 -*-
 

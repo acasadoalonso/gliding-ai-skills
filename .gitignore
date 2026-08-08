@@ -3,3 +3,4 @@ __pycache__/
 .pytest_cache/
 mytoken.txt
 myenv/
+tools/config_secrets.py

@@ -1,6 +1,6 @@
 ---
 name: gen_cucx_from_sgp
-description: Generate a SeeYou Competition .cucx file from a Sailplane Grand Prix (SGP) competition on crosscountry.aero. Use this whenever the user wants to build, create, export, or generate a .cucx (SeeYou Competition file) from an SGP comp, load an SGP competition into SeeYou, or turn SGP tasks/pilots/results into a SeeYou-importable file — even if they only mention "the cucx", "SeeYou file", or "SGP export" without spelling out every step. The skill prompts for the SGP competition number and the day (a specific day number or ALL), then runs tools/make_cucx.py to produce a .cucx whose .cup waypoint file carries both the task definitions and their turnpoints.
+description: Generate a SeeYou Competition .cucx file from a Sailplane Grand Prix (SGP) competition on crosscountry.aero. Use this whenever the user wants to build, create, export, or generate a .cucx (SeeYou Competition file) from an SGP comp, load an SGP competition into SeeYou, or turn SGP tasks/pilots/results into a SeeYou-importable file — even if they only mention "the cucx", "SeeYou file", or "SGP export" without spelling out every step. Takes two arguments — the .cucx file name and the SGP competition id — then runs tools/make_cucx.py to produce a .cucx whose .cup waypoint file carries both the task definitions and their turnpoints.
 ---
 
 # Generate a .cucx from an SGP competition
@@ -8,23 +8,24 @@ description: Generate a SeeYou Competition .cucx file from a Sailplane Grand Pri
 Build a SeeYou Competition `.cucx` from a Sailplane Grand Prix competition using
 `tools/make_cucx.py`. That script pulls the comp, pilots, tasks, and results
 straight through `src/SGP/sgp_api.py` (no MCP runtime needed) and assembles the
-`.cucx`. Your job is to gather the two inputs it needs and run it.
+`.cucx`. Your job is to gather the two arguments it needs and run it.
 
-## Inputs to collect
+## Arguments
 
-Ask the user for both before running, unless they already gave them:
+This skill takes two positional arguments, in this order:
 
-1. **Competition number** — the SGP `comp_id` (e.g. `93`). If the user names a
+1. **`.cucx` file name** — the output file name (e.g. `norway_sgp_2026.cucx`).
+   Add the `.cucx` extension if the user left it off.
+2. **SGP competition id** — the SGP `comp_id` (e.g. `93`). If the user names a
    competition instead of a number, run `python3 src/SGP/sgp_api.py` helpers or
    the `sgp` MCP `list_competitions` to find the matching `comp_id`, then confirm
    it with the user.
-2. **Day** — a specific day number **or** `ALL` (the default). The day number is
-   the 1-based competition day as shown in the results ("Day 3"), counting only
-   days that actually have a task. `ALL` writes every scored day's task into the
-   `.cup`.
 
-If the user is vague ("just make the cucx"), assume `ALL` and say so, but still
-confirm the competition number — getting that wrong wastes the whole run.
+If either argument is missing from the invocation, ask the user for it before
+running — don't guess a file name or a competition id.
+
+The task day is not an argument to this skill; it always builds `ALL` scored
+days into the `.cup` (see below for what that controls).
 
 ## What the day selection controls
 
@@ -43,16 +44,11 @@ waypoints in the `.cup`" behavior the tool guarantees.
 From the repo root (`/home/angel`):
 
 ```bash
-# all scored days
-python3 tools/make_cucx.py --comp-id <ID>
-
-# a single day (e.g. day 3), optional explicit output name
-python3 tools/make_cucx.py --comp-id <ID> --day 3 --out <name>.cucx
+python3 tools/make_cucx.py --comp-id <ID> --out <name>.cucx
 ```
 
-`--day` accepts `ALL` (default) or an integer. When `--out` is omitted the file
-is named from the competition's short name (e.g. `norway_sgp_2026.cucx`). The
-script prints `wrote <path>` on success. Report that path to the user.
+`--day` is left at its `ALL` default. The script prints `wrote <path>` on
+success. Report that path to the user.
 
 ## Verify before claiming success
 
@@ -80,6 +76,14 @@ Expect `integrity: ok`, `app_id: 1668637560`, the four members
 line(s) matching the day selection. The one thing not checkable here is whether
 SeeYou Competition actually opens the file — if the user can open it, that closes
 the loop.
+
+## Tested
+
+Verified 2026-08-08 against a live SGP competition with the two-argument
+invocation: `--comp-id 94 --out /nfs/tmp/germany_sgp_2026.cucx` (Germany SGP
+2026). Output passed the verification check above — `integrity: ok`, `app_id:
+1668637560`, the expected four members, and 3 tasks in `contest.db` with the
+practice-day task's turnpoint chain present in the `.cup`.
 
 ## Format & gotchas (for debugging)
 

@@ -6,6 +6,9 @@ Usage:
 
 Reads the markdown report (tables, headings, blockquotes, code blocks) and
 produces a formatted .docx with matching structure.
+
+Without --out the .docx is written next to the reports, in the repo's
+reports/ directory, using the input's stem as the file name.
 """
 import argparse
 import datetime
@@ -18,7 +21,8 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt, RGBColor
 from docx.oxml.ns import qn
 
-REPORTS_DIR = Path("/home/angel/reports")
+# Repo-relative so the default follows the script if tools/ ever moves again.
+REPORTS_DIR = Path(__file__).resolve().parent.parent / "reports"
 
 
 def parse_markdown(text: str):

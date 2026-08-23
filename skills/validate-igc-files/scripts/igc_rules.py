@@ -835,15 +835,49 @@ L_PREFIX_REPORT_CAP = 20
 GENERIC_L_PREFIXES = {"PLT", "OOI", "PFC", "SOF", "FLA", "SEE", "CU:"}
 
 
+TIMED_RECORD_TYPES = set("BEFK")
+
+
+def _record_time(line):
+    """Seconds since midnight from the HHMMSS in columns 2-7, or None."""
+    raw = line[1:7]
+    if len(raw) != 6 or not raw.isdigit():
+        return None
+    hh, mm, ss = int(raw[:2]), int(raw[2:4]), int(raw[4:6])
+    if hh > 23 or mm > 59 or ss > 59:
+        return None
+    return hh * 3600 + mm * 60 + ss
+
+
+def _timed_stream(doc):
+    """Every timestamped record in file order, as (line, letter, seconds).
+
+    B, E, F and K records all carry HHMMSS in columns 2-7 and share a single
+    timeline, so ordering has to be judged across the whole stream. Comparing
+    only fix to fix misses the common real failure: an F record stamped later
+    than the B records that follow it, which leaves the B sequence itself
+    perfectly ordered while the file's timeline still runs backwards.
+    """
+    out = []
+    for n, line in doc.numbered():
+        if line[:1] in TIMED_RECORD_TYPES:
+            t = _record_time(line)
+            if t is not None:
+                out.append((n, line[0], t))
+    return out
+
+
 @rule("TIME_OUT_OF_SEQUENCE", ERROR, "timing")
 def r_time_out_of_sequence(doc):
     hits = []
-    for prev, cur in zip(doc.fixes, doc.fixes[1:]):
-        if cur.time < prev.time:
-            hits.append((cur.line, _hms(cur.time)))
+    stream = _timed_stream(doc)
+    for (_, p_letter, p_time), (n, c_letter, c_time) in zip(stream, stream[1:]):
+        if c_time < p_time:
+            hits.append((n, f"{c_letter} {_hms(c_time)} after "
+                            f"{p_letter} {_hms(p_time)}"))
     return summarize(*_a("TIME_OUT_OF_SEQUENCE", ERROR, "timing"), hits,
-                     "{n} fix(es) with a timestamp earlier than the previous "
-                     "fix, first {detail} at line {line}")
+                     "{n} timestamped record(s) earlier than the timestamped "
+                     "record before them, first {detail} at line {line}")
 
 
 @rule("TIME_DUPLICATE", WARNING, "timing")

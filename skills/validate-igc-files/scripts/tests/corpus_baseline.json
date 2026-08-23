@@ -25,6 +25,7 @@
     "I_PTR_CHAIN": 3,
     "L_BAD_PREFIX": 25,
     "TIME_DUPLICATE": 92,
+    "TIME_OUT_OF_SEQUENCE": 3,
     "TLC_UNKNOWN_I": 3
   }
 }

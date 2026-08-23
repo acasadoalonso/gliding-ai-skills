@@ -7,8 +7,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 sys.path.insert(0, str(HERE))
 
-from igc_model import parse
-from igc_rules import RULES
+from igc_model import parse, parse_lines
+from igc_rules import RULES, r_time_out_of_sequence
 import build_fixtures
 
 FIXTURES = HERE / "fixtures"
@@ -50,3 +50,40 @@ def test_rule_ids_are_unique():
 
 def test_severities_are_valid():
     assert {r.severity for r in RULES} <= {"error", "warning"}
+
+
+def _sequence_findings(lines):
+    return r_time_out_of_sequence(parse_lines(lines))
+
+
+def _f_stamped(seconds):
+    hh, mm, ss = seconds // 3600, seconds % 3600 // 60, seconds % 60
+    return f"F{hh:02d}{mm:02d}{ss:02d}010203040506"
+
+
+def test_time_sequence_catches_backward_f_record():
+    """A misplaced F record leaves every B record in order (see AL10)."""
+    start = build_fixtures.START
+    lines = build_fixtures.replace(
+        list(build_fixtures.BASE_LINES),
+        lambda l: l.startswith("F"), _f_stamped(start + 300))
+    findings = _sequence_findings(lines)
+    assert [f.rule_id for f in findings] == ["TIME_OUT_OF_SEQUENCE"]
+    assert findings[0].data["count"] == 1
+
+
+def test_time_sequence_catches_backward_k_record():
+    start = build_fixtures.START
+    lines = build_fixtures.replace(
+        list(build_fixtures.BASE_LINES),
+        lambda l: l.startswith("K"), build_fixtures.k(start - 60))
+    assert [f.rule_id for f in _sequence_findings(lines)] == ["TIME_OUT_OF_SEQUENCE"]
+
+
+def test_time_sequence_allows_equal_timestamps_across_types():
+    """An F or E record sharing its second with the next fix is normal."""
+    start = build_fixtures.START
+    lines = build_fixtures.replace(
+        list(build_fixtures.BASE_LINES),
+        lambda l: l.startswith("F"), _f_stamped(start))
+    assert _sequence_findings(lines) == []

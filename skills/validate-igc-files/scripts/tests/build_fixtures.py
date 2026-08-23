@@ -42,6 +42,20 @@ def k(seconds):
 
 START = 11 * 3600 + 1 * 60 + 35
 
+
+def f(seconds):
+    """F record at the given second-of-day, 6 satellites."""
+    hh, mm, ss = seconds // 3600, seconds % 3600 // 60, seconds % 60
+    return "F" + f"{hh:02d}{mm:02d}{ss:02d}" + "010203040506"
+
+
+# The second F record sits between fixes, so its stamp has to belong to the same
+# timeline as the fixes around it: TIME_OUT_OF_SEQUENCE reads B, E, F and K as
+# one stream and an F record stamped ahead of the fixes that follow it is a
+# backward jump.
+F_FIRST = f(START - 5)
+F_SECOND = f(START + 5)
+
 BASE_LINES = [
     "ANAV240406",
     "HFDTEDATE:130726,01",
@@ -66,7 +80,7 @@ BASE_LINES = [
     "C5126569N01749664ETP2",
     "C5142083N01750783EFINISH",
     "C5142083N01750783ELANDING",
-    "F110130010203040506",
+    F_FIRST,
     b(START + 0),
     b(START + 1),
     b(START + 2),
@@ -75,7 +89,7 @@ BASE_LINES = [
     b(START + 4),
     k(START + 4),
     b(START + 5),
-    "F110230010203040506",
+    F_SECOND,
     b(START + 6),
     b(START + 7),
     b(START + 8),
@@ -189,9 +203,9 @@ MUTATIONS = {
     "TIME_DUPLICATE": lambda L: [
         b(START + 4) if l == b(START + 5) else l for l in L],
     "F_RECORDS_NONE": lambda L: drop(L, lambda l: l.startswith("F")),
-    "F_RECORDS_ONE": lambda L: drop(L, lambda l: l.startswith("F1102")),
+    "F_RECORDS_ONE": lambda L: drop(L, lambda l: l == F_SECOND),
     "F_INTERVAL_LONG": lambda L: [
-        "F120130010203040506" if l.startswith("F1102") else l for l in L],
+        f(START + 305) if l == F_SECOND else l for l in L],
     # +40s not something larger on purpose: the rule infers the nominal interval
     # from elapsed time over fix count, so an extravagant gap raises the inferred
     # nominal past the 60s cut-off and the rule correctly declines to judge.

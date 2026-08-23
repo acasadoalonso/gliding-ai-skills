@@ -76,6 +76,12 @@ geodetic datum, a task declaration inconsistent with the flight date, a missing
 G security record, records after the G record, out-of-sequence timestamps, and a
 dead ENL or MOP sensor.
 
+Timestamp ordering is judged across the whole timestamped stream — B, E, F and K
+records share one timeline — not fix to fix. The common real failure is an F
+record stamped ahead of the fixes that follow it, which leaves the B sequence
+itself perfectly ordered while the file's timeline runs backwards; other
+validators (AL10) report exactly this, and a B-to-B check never sees it.
+
 **WARNING** — a real spec deviation that does not invalidate the file. Always
 reported, never fails: non-ASCII characters, empty lines, LXNav's 3-character
 serial and `_` separator, F-record intervals over 5 minutes, gaps in fixing,

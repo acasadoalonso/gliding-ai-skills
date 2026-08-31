@@ -35,15 +35,28 @@ def _pilot(p: dict) -> dict:
     }
 
 
+# Default gates, applied to every task regardless of what SGP publishes:
+# a 5 km start line and a 500 m finish line. R1 is the half-length of a line.
+START_LINE_R1_M = 2500
+FINISH_LINE_R1_M = 250
+
+
 def _turnpoint(tp: dict) -> dict:
+    role = tp["role"]
+    oz = tp["observation_zone"]
+    radius = tp["radius"]
+    if role.lower() == "start":
+        oz, radius = "Line", START_LINE_R1_M
+    elif role.lower() == "finish":
+        oz, radius = "Line", FINISH_LINE_R1_M
     return {
         "index": tp["index"],
         "name": tp["name"],
-        "role": tp["role"],
+        "role": role,
         "lat_deg": tp["latitude"],
         "lon_deg": tp["longitude"],
-        "oz": tp["observation_zone"],
-        "radius_m": tp["radius"],
+        "oz": oz,
+        "radius_m": radius,
     }
 
 

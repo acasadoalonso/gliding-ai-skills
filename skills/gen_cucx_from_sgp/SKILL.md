@@ -27,6 +27,20 @@ running — don't guess a file name or a competition id.
 The task day is not an argument to this skill; it always builds `ALL` scored
 days into the `.cup` (see below for what that controls).
 
+## Start and finish gates
+
+The tool always writes the same gates, overriding whatever observation zone SGP
+publishes for the task:
+
+| Point  | Zone | Length | `R1` (half-length) |
+|--------|------|--------|--------------------|
+| Start  | Line | 5 km   | `2500m`            |
+| Finish | Line | 500 m  | `250m`             |
+
+Turnpoints keep the zone SGP publishes. The defaults live in
+`tools/cucx_bundle.py` (`START_LINE_R1_M` / `FINISH_LINE_R1_M`) and are applied
+once, so both the `.cup` `OBSZONE` lines and `contest.db`'s `point` rows agree.
+
 ## What the day selection controls
 
 The `--day` value only decides **which task lines go into the `.cup` Related
@@ -84,6 +98,10 @@ invocation: `--comp-id 94 --out /nfs/tmp/germany_sgp_2026.cucx` (Germany SGP
 2026). Output passed the verification check above — `integrity: ok`, `app_id:
 1668637560`, the expected four members, and 3 tasks in `contest.db` with the
 practice-day task's turnpoint chain present in the `.cup`.
+
+Gate defaults re-verified 2026-08-31 on the same comp: every task in the `.cup`
+starts with `R1=2500m,Line=1` and ends with `R1=250m,Line=1`, and `contest.db`'s
+`point` rows show `oz_radius1` 2500 / 250 with `oz_line=1` for all 10 tasks.
 
 ## Format & gotchas (for debugging)
 

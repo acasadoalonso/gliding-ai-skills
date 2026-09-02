@@ -27,19 +27,23 @@ running — don't guess a file name or a competition id.
 The task day is not an argument to this skill; it always builds `ALL` scored
 days into the `.cup` (see below for what that controls).
 
-## Start and finish gates
+## Observation zones
 
-The tool always writes the same gates, overriding whatever observation zone SGP
+The tool always writes the same zones, overriding whatever observation zone SGP
 publishes for the task:
 
-| Point  | Zone | Length | `R1` (half-length) |
-|--------|------|--------|--------------------|
-| Start  | Line | 5 km   | `2500m`            |
-| Finish | Line | 500 m  | `250m`             |
+| Point       | Zone     | `R1`             | `A1` | `Line` |
+|-------------|----------|------------------|-----:|-------:|
+| Start       | Line     | `2500m` (5 km)   | 180  | 1      |
+| Turnpoints  | Cylinder | radius from SGP  | 360  | 0      |
+| Finish      | Line     | `250m` (500 m)   | 180  | 1      |
 
-Turnpoints keep the zone SGP publishes. The defaults live in
-`tools/cucx_bundle.py` (`START_LINE_R1_M` / `FINISH_LINE_R1_M`) and are applied
-once, so both the `.cup` `OBSZONE` lines and `contest.db`'s `point` rows agree.
+Start and finish are **always** lines (`A1=180`, `Line=1`); every other
+turnpoint is **always** a cylinder (`A1=360`, `Line=0`), keeping only the radius
+SGP publishes. The line half-lengths live in `tools/cucx_bundle.py`
+(`START_LINE_R1_M` / `FINISH_LINE_R1_M`) and the zone shapes in
+`tools/cucx_db.py` (`_oz_fields`); both are applied once, so the `.cup`
+`OBSZONE` lines and `contest.db`'s `point` rows agree.
 
 ## What the day selection controls
 
@@ -99,9 +103,12 @@ invocation: `--comp-id 94 --out /nfs/tmp/germany_sgp_2026.cucx` (Germany SGP
 1668637560`, the expected four members, and 3 tasks in `contest.db` with the
 practice-day task's turnpoint chain present in the `.cup`.
 
-Gate defaults re-verified 2026-08-31 on the same comp: every task in the `.cup`
-starts with `R1=2500m,Line=1` and ends with `R1=250m,Line=1`, and `contest.db`'s
-`point` rows show `oz_radius1` 2500 / 250 with `oz_line=1` for all 10 tasks.
+Zones re-verified 2026-09-02 on the same comp (`--comp-id 94`): across the 72
+`OBSZONE` lines of the 10 tasks the only shapes are
+`Style=2,A1=180,Line=1` (start), `Style=3,A1=180,Line=1` (finish) and
+`Style=1,A1=360,Line=0` (turnpoints); `contest.db`'s `point` rows match —
+`oz_angle1` pi with `oz_line=1` for the 10 starts and 10 finishes, 2*pi with
+`oz_line=0` for the 52 turnpoints.
 
 ## Format & gotchas (for debugging)
 

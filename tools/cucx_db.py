@@ -43,13 +43,17 @@ def _millis_to_dt(ms):
 
 
 def _oz_fields(role: str, oz: str):
-    """Return (type, oz_type, oz_line, oz_angle1) for a turnpoint."""
+    """Return (type, oz_type, oz_line, oz_angle1) for a turnpoint.
+
+    Start and finish are always lines (A1 = 180 deg); every other turnpoint is
+    always a cylinder (A1 = 360 deg).
+    """
     role = role.lower()
     if role == "start":
-        return "start", "next", 1 if oz == "Line" else 0, math.pi
+        return "start", "next", 1, math.pi
     if role == "finish":
-        return "finish", "previous", 1 if oz == "Line" else 0, math.pi
-    return "point", "symmetric", 0, math.pi
+        return "finish", "previous", 1, math.pi
+    return "point", "symmetric", 0, 2 * math.pi
 
 
 def _insert_warning(cur, ids, start_alt, finish_alt):

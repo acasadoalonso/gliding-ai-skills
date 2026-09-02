@@ -49,6 +49,8 @@ def _turnpoint(tp: dict) -> dict:
         oz, radius = "Line", START_LINE_R1_M
     elif role.lower() == "finish":
         oz, radius = "Line", FINISH_LINE_R1_M
+    else:
+        oz = "Cylinder"
     return {
         "index": tp["index"],
         "name": tp["name"],
